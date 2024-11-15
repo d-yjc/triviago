@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<achievements>
+    <achievement
+        id="1"
+        title="First Quiz Completed"
+        description="Complete your first quiz"
+        event="QUIZ_COMPLETED"
+        points="10" />
+    <achievement
+        id="2"
+        title="Night Owl"
+        description="Play a quiz at midnight"
+        event="PLAY_AT_MIDNIGHT"
+        points="15" />
+    <achievement
+        id="3"
+        title="Hardcore Player"
+        description="Correctly answer a hard question"
+        event="ANSWER_HARD_QUESTION"
+        points="20" />
+</achievements>

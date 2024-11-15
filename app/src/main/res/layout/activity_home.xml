@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+>
+
+    <!-- RelativeLayout to enclose the AppBar, Toolbar, and FrameLayout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true">
+
+        <!-- AppBarLayout at the top -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:fitsSystemWindows="true">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/materialToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:menu="@menu/top_app_bar"
+                app:title="@string/app_name"
+                app:titleTextAppearance="@style/TopAppBar"
+                />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/appbar"
+            tools:layout="@layout/fragment_home" />
+    </RelativeLayout>
+
+    <!-- Bottom AppBar -->
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomappbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:fitsSystemWindows="true"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomnavview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:elevation="0dp"
+            style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+            app:menu="@menu/bottom_nav_bar"
+            app:labelVisibilityMode="labeled" />
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+    <!-- Play Button, Adjusted for Bottom Margin -->
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/playbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="120dp"
+        android:backgroundTint="@color/primary"
+        app:iconTint="@color/primaryContainer"
+        app:icon="@drawable/ic_play"
+        android:text="Play!"
+        android:textSize="8pt"
+        android:textStyle="bold"
+        android:textColor="@color/primaryLight"
+        app:cornerRadius="16dp"
+        >
+
+    </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

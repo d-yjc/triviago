@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "673688697699",
+    "project_id": "triviago-7d750",
+    "storage_bucket": "triviago-7d750.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673688697699:android:ac628281852577004bb156",
+        "android_client_info": {
+          "package_name": "com.example.triviago"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCW0SKI4Q5M_YnsThAg-Q5xBrXwgTFeHRU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TopAppBar" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item> <!-- Custom size -->
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#FFFFFF</item> <!-- Custom color -->
+        <item name="android:fontFamily">sans-serif-medium</item> <!-- Font style -->
+    </style>
+
+    <style name="OptionButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@drawable/ic_play</item>
+    </style>
+</resources>
