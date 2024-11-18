@@ -57,7 +57,7 @@ class LeaderboardFragment : Fragment() {
             .addOnSuccessListener { querySnapshot ->
                 val users = querySnapshot.documents.map { document ->
                     User(
-                        name = document.getString("email") ?: "N/A", //This is the "email" field in the Firestore document TODO: Adapt for usernames when implemented.
+                        name = document.getString("email") ?: "N/A", //TODO: Adapt for usernames when implemented.
                         score = document.getLong("score")?.toInt() ?: 0
                     )
                 }

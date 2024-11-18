@@ -82,7 +82,7 @@ class QuizFragment : Fragment() {
 
             question.options.forEachIndexed { index, option ->
                 if (index < optionButtons.size) {
-                    optionButtons[index].text = option
+                    optionButtons[index].text = Html.fromHtml(option, Html.FROM_HTML_MODE_LEGACY)
                     optionButtons[index].visibility = View.VISIBLE
                     optionButtons[index].setOnClickListener {
                         checkAnswer(option)

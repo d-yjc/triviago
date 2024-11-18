@@ -25,4 +25,5 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="log_out">Log out</string>
     <string name="play_button">Play Button</string>
+    <string name="already_registered">"Email is already registered. "</string>
 </resources>

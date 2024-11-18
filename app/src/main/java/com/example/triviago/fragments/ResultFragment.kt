@@ -22,8 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore
  */
 class ResultFragment : Fragment() {
     // TODO: Rename and change types of parameters
+    private var category: String = ""
     private var score: Int = 0
     private var totalQuestions: Int = 0
+    private var isBooleanType: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,18 +42,19 @@ class ResultFragment : Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_result, container, false)
         arguments?.let {
+            category = it.getString(ARG_CATEGORY).toString()
             score = it.getInt(ARG_SCORE)
             totalQuestions = it.getInt(ARG_TOTAL_QUESTIONS)
+            isBooleanType = it.getBoolean(ARG_IS_BOOLEAN)
         }
         val scoreTextView: TextView = view.findViewById(R.id.scoreTextView)
         scoreTextView.text = "Score: $score/$totalQuestions"
         saveScore(score)
+        saveQuizResponse()
         val quitButton: Button = view.findViewById(R.id.quitButton)
         quitButton.setOnClickListener{
-            //TODO: probably save the score to profile before finishing here.
             activity?.finish()
         }
-        // Inflate the layout for this fragment
         return view
     }
 
@@ -76,16 +79,44 @@ class ResultFragment : Fragment() {
         }
     }
 
+    private fun saveQuizResponse() {
+        val user = FirebaseAuth.getInstance().currentUser
+        val db = FirebaseFirestore.getInstance()
+
+        val quizData = mapOf(
+            "category" to arguments?.getString("category"),
+            "date" to System.currentTimeMillis(),
+            "score" to arguments?.getInt("score"),
+            "numQuestions" to arguments?.getInt("totalQuestions"),
+            "isBooleanType" to arguments?.getBoolean("isBooleanType")
+        )
+
+        user?.let {
+            db.collection("users").document(user.uid).collection("responses")
+                .add(quizData)
+                .addOnSuccessListener {
+                    Log.d("QuizResponse", "Quiz response saved successfully")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("QuizResponse", "Error saving quiz response", e)
+                }
+        }
+    }
+
     companion object {
 
+        private const val ARG_CATEGORY = "category"
         private const val ARG_SCORE = "score"
         private const val ARG_TOTAL_QUESTIONS = "totalQuestions"
+        private const val ARG_IS_BOOLEAN = "isBooleanType"
         @JvmStatic
-        fun newInstance(score: Int, totalQuestions: Int) =
+        fun newInstance(category: String, score: Int, totalQuestions: Int, isBooleanType: Boolean) =
             ResultFragment().apply {
                 arguments = Bundle().apply {
+                    putString(ARG_CATEGORY, category)
                     putInt(ARG_SCORE, score)
                     putInt(ARG_TOTAL_QUESTIONS, totalQuestions)
+                    putBoolean(ARG_IS_BOOLEAN, isBooleanType)
                 }
             }
     }

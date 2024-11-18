@@ -79,9 +79,11 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.i(logCatTag, "createUserWithEmailAndPassword: Success")
                     createUserInFireStore(mAuth.currentUser)
-
                     closeKeyboard()
                     startHomeActivity()
+                } else {
+                    Log.i(logCatTag, "createUserWithEmailAndPassword: Failure", task.exception)
+                    displayMsg(registerButton, getString(R.string.already_registered))
                 }
             }
         }

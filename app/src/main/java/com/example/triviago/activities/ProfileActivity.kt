@@ -1,13 +1,18 @@
 package com.example.triviago.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.triviago.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.triviago.*
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +32,7 @@ class ProfileActivity : AppCompatActivity() {
                 val totalScore = document.getLong("score") ?: 0
                 scoreTextView.text = "Total score: $totalScore"
             }
+            fetchQuizHistory()
         }
 
         val backButton: MaterialButton = findViewById(R.id.backButton)
@@ -34,4 +40,31 @@ class ProfileActivity : AppCompatActivity() {
             finish()
         }
     }
+
+    private fun fetchQuizHistory() {
+        val user = FirebaseAuth.getInstance().currentUser
+        val db = FirebaseFirestore.getInstance()
+
+        user?.let {
+            db.collection("users").document(it.uid).collection("responses")
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get()
+                .addOnSuccessListener { result ->
+                    val quizHistory = result.map { doc ->
+                        doc.toObject(QuizResponse::class.java)
+                    }
+                    displayQuizHistory(quizHistory)
+                }
+                .addOnFailureListener { e ->
+                    Log.e("QuizHistory", "Error fetching quiz history", e)
+                }
+        }
+    }
+
+    private fun displayQuizHistory(pastQuizzes: List<QuizResponse>) {
+        val recyclerView: RecyclerView = findViewById(R.id.pastQuizzesRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = QuizResponseAdapter(pastQuizzes)
+    }
+
 }

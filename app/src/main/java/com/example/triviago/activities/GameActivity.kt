@@ -15,6 +15,8 @@ import com.example.triviago.fragments.ResultFragment
 
 class GameActivity : AppCompatActivity() {
 
+    private var category: String = ""
+    private var type: String = ""
     private var questions: List<Question> = emptyList()
     private var currentQuestionIndex: Int = 0
     private var score: Int = 0
@@ -32,9 +34,9 @@ class GameActivity : AppCompatActivity() {
 
         // Fetch quiz data
         val numQuestions = intent.getIntExtra("numQuestions", 10)
-        val category = intent.getStringExtra("category") ?: "Any"
+        category = intent.getStringExtra("category") ?: "Any"
         val difficulty = intent.getStringExtra("difficulty") ?: "Any"
-        val type = intent.getStringExtra("type")
+        type = intent.getStringExtra("type") ?: "Any"
 
         // Initialize the OpenTDBService to fetch questions
         val service = OpenTdbAPIHandler(this)
@@ -69,7 +71,8 @@ class GameActivity : AppCompatActivity() {
                 )
             )
         } else {
-            loadFragment(ResultFragment.Companion.newInstance(score, questions.size))
+            var isBooleanType = (type == "boolean")
+            loadFragment(ResultFragment.Companion.newInstance(category, score, questions.size, isBooleanType))
         }
     }
 
