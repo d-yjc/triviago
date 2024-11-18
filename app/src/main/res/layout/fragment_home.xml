@@ -18,62 +18,73 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardElevation="8dp"
+            app:cardElevation="4dp"
             app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="@color/primaryContainer">
+            app:cardBackgroundColor="@color/primaryBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
+                android:orientation="vertical"
                 android:padding="16dp">
 
                 <!-- Number of Questions -->
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:text="Number of Questions"
-                        android:textColor="@android:color/white"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <NumberPicker
-                        android:id="@+id/num_questions_picker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                    android:layout_marginBottom="8dp"
+                    android:text="Number of Questions"
+                    android:textColor="@color/primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <!-- Question Type -->
-                <LinearLayout
-                    android:layout_width="0dp"
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/num_questions_slider"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal">
+                    android:stepSize="0"
+                    android:valueFrom="1"
+                    android:valueTo="50"
+                    app:trackColor="@color/primaryLight"
+                    />
 
-                    <TextView
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Question Type"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary"
+                    android:layout_marginBottom="8dp" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/question_type_toggle_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_multiple_choice"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Question Type"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:layout_marginBottom="8dp" />
+                        app:cornerRadius="10dp"
+                        app:checkedIconTint="@color/primary"
+                        app:backgroundTint="@color/white"
+                        android:text="Multiple Choice" />
 
-                    <NumberPicker
-                        android:id="@+id/type_picker"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_true_false"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
+                        android:layout_height="wrap_content"
+                        app:checkedIconTint="@color/primary"
+                        app:backgroundTint="@color/white"
+                        app:cornerRadius="10dp"
+                        android:text="True/False" />
+                </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -81,9 +92,9 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="8dp"
+            app:cardElevation="4dp"
             app:cardCornerRadius="8dp"
-            app:cardBackgroundColor="@color/primaryContainer">
+            app:cardBackgroundColor="@color/primaryBackground">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,30 +109,31 @@
                     android:text="Category"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/primary"
                     android:layout_marginBottom="8dp" />
-
-                <!-- Difficulty -->
 
                 <Spinner
                     android:id="@+id/category_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginBottom="16dp" />
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/primaryLight" />
 
+                <!-- Difficulty -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Difficulty"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/primary"
                     android:layout_marginBottom="8dp" />
 
                 <Spinner
                     android:id="@+id/difficulty_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp" />
+                    android:layout_height="48dp"
+                    android:background="@color/primaryLight" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>

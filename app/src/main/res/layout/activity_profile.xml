@@ -42,8 +42,9 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center"
-                    android:background="@color/primaryContainer"
-                    android:src="@drawable/ic_profile" />
+                    android:background="@drawable/circular_profile"
+                    android:src="@drawable/ic_profile"
+                    />
 
                 <!-- User Name -->
                 <TextView
@@ -123,6 +124,7 @@
                     android:id="@+id/pastQuizzesRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:scrollIndicators="right"
                     tools:listitem="@layout/item_quiz_response" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

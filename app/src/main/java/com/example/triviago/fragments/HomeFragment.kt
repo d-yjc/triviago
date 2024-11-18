@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.NumberPicker
 import android.widget.Spinner
+import androidx.core.content.ContextCompat
 import com.example.triviago.R
+import com.google.android.material.slider.Slider
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,24 +41,29 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        // Number of Questions Picker
-        val questionPicker: NumberPicker = view.findViewById(R.id.num_questions_picker)
-        questionPicker.minValue = 1
-        questionPicker.maxValue = 50
-        questionPicker.wrapSelectorWheel = false
-        // Question Type Picker
-        val typePicker: NumberPicker = view.findViewById(R.id.type_picker)
-        val types = resources.getStringArray(R.array.types)
-        typePicker.minValue = 0
-        typePicker.maxValue = 1
-        typePicker.displayedValues = types
-        typePicker.wrapSelectorWheel = false
+        // Number of Questions Slider
+        val questionSlider: Slider = view.findViewById(R.id.num_questions_slider)
+        questionSlider.valueFrom = 1f
+        questionSlider.valueTo = 50f
+        questionSlider.value = 10f // Set default value
+        questionSlider.setLabelFormatter { value -> value.toInt().toString() }
+        questionSlider.trackActiveTintList = ContextCompat.getColorStateList(requireContext(), R.color.primary)!!
+        // Question Type Toggle Group
+        val typeToggleGroup: com.google.android.material.button.MaterialButtonToggleGroup =
+            view.findViewById(R.id.question_type_toggle_group)
+        val multipleChoiceButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_multiple_choice)
+        val trueFalseButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_true_false)
+
+        // Set default selection (optional)
+        typeToggleGroup.check(R.id.btn_multiple_choice)
+
         // Difficulty Spinner
         val difficultySpinner: Spinner = view.findViewById(R.id.difficulty_spinner)
         val difficulties = resources.getStringArray(R.array.difficulties)
         val difficultyAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, difficulties)
         difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         difficultySpinner.adapter = difficultyAdapter
+
         // Category Spinner
         val categorySpinner: Spinner = view.findViewById(R.id.category_spinner)
         val categories = resources.getStringArray(R.array.categories)

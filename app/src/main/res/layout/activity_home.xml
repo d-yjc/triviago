@@ -30,8 +30,7 @@
                 android:theme="?attr/actionBarTheme"
                 app:menu="@menu/top_app_bar"
                 app:title="@string/app_name"
-                app:titleTextAppearance="@style/TopAppBar"
-                />
+                app:titleTextAppearance="@style/TopAppBar" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
