@@ -1,8 +1,11 @@
 package com.example.triviago
 
+import com.google.firebase.firestore.PropertyName
+
 data class QuizResponse(
-    var date: Long = 0L,
     var category: String = "",
-    var totalScore: Int = 0,
-    var isBoolean: Boolean = false // Updated type from Boolean to String for clarity
+    var date: Long = 0L,
+    var score: Int = 0,
+    var numQuestions : Int = 0,
+    @PropertyName("isBooleanType") var isBooleanType: Boolean = false
 )

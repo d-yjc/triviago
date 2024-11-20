@@ -26,4 +26,7 @@
     <string name="log_out">Log out</string>
     <string name="play_button">Play Button</string>
     <string name="already_registered">"Email is already registered. "</string>
+    <string name="multiple_choice">Multiple Choice</string>
+    <string name="true_false">True/False</string>
+    <string name="any">Any</string>
 </resources>

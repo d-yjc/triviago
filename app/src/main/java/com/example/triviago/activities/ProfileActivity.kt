@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.triviago.*
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,20 +25,21 @@ class ProfileActivity : AppCompatActivity() {
         val user = FirebaseAuth.getInstance().currentUser
         val db = FirebaseFirestore.getInstance()
 
+        val toolbar: MaterialToolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
+
         user?.let { user ->
             userName.text = user.email
-
             db.collection("users").document(user.uid).get().addOnSuccessListener { document ->
-
                 val totalScore = document.getLong("score") ?: 0
                 scoreTextView.text = "Total score: $totalScore"
             }
             fetchQuizHistory()
-        }
-
-        val backButton: MaterialButton = findViewById(R.id.backButton)
-        backButton.setOnClickListener {
-            finish()
         }
     }
 
@@ -51,7 +53,13 @@ class ProfileActivity : AppCompatActivity() {
                 .get()
                 .addOnSuccessListener { result ->
                     val quizHistory = result.map { doc ->
-                        doc.toObject(QuizResponse::class.java)
+                        QuizResponse(
+                            category = doc.getString("category") ?: "",
+                            date = doc.getLong("date") ?: 0L,
+                            score = (doc.getLong("score") ?: 0).toInt(),
+                            numQuestions = (doc.getLong("numQuestions") ?: 0).toInt(),
+                            isBooleanType = doc.getBoolean("isBooleanType") == true
+                        )
                     }
                     displayQuizHistory(quizHistory)
                 }

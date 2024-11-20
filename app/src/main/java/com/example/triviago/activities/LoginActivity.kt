@@ -96,9 +96,10 @@ class LoginActivity : AppCompatActivity() {
                 if (!documentSnapshot.exists()) {
                     val userData = mapOf(
                         "email" to user.email,
-                        "score" to 0
+                        "score" to 0,
+                        "questionWins" to 0,
+                        "questionLosses" to 0
                     )
-
                     userDocRef.set(userData)
                         .addOnSuccessListener {
                             Log.d(logCatTag, "User data added to Firestore")

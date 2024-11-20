@@ -7,7 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Calendar
 import java.util.Locale
+
 
 class QuizResponseAdapter(
     private val quizzes: List<QuizResponse>) :
@@ -27,19 +29,30 @@ class QuizResponseAdapter(
 
     override fun onBindViewHolder(holder: QuizViewHolder, index: Int) {
         val response = quizzes[index]
-        holder.categoryTextView.text = "Category: ${response.category ?: "Unknown"}"
-        holder.scoreTextView.text = "Score: ${response.totalScore}"
-        holder.dateTextView.text = "Date: ${formatDate(response.date)}"
-        holder.typeTextView.text = "Type: ${response.isBoolean}"
+        holder.categoryTextView.text = "${response.category ?: "Unknown"}"
+        holder.dateTextView.text = "${formatDate(response.date)}"
+        holder.scoreTextView.text = "Score: ${response.score}/${response.numQuestions}"
+        holder.typeTextView.text = if (response.isBooleanType) "True or False" else "Multiple Choice"
     }
 
     override fun getItemCount(): Int = quizzes.size
 
     private fun formatDate(timestamp: Long): String {
-        val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        return sdf.format(Date(timestamp))
+        val date = Date(timestamp)
+        val calender = Calendar.getInstance().apply { time = date }
+        val day = calender.get(Calendar.DAY_OF_MONTH)
+
+        val daySuffix = when {
+            day in 11..13 -> "th"
+            day % 10 == 1 -> "st"
+            day % 10 == 2 -> "nd"
+            day % 10 == 3 -> "rd"
+            else -> "th"
+        }
+
+        val sdf = SimpleDateFormat("MMM", Locale.getDefault())
+        var resultDate = sdf.format(date)
+        resultDate = "$day$daySuffix $resultDate"
+        return resultDate
     }
-
-
-
 }

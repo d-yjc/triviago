@@ -58,7 +58,9 @@ class LeaderboardFragment : Fragment() {
                 val users = querySnapshot.documents.map { document ->
                     User(
                         name = document.getString("email") ?: "N/A", //TODO: Adapt for usernames when implemented.
-                        score = document.getLong("score")?.toInt() ?: 0
+                        score = document.getLong("score")?.toInt() ?: 0,
+                        questionWins = document.getLong("questionWins")?.toInt() ?: 0,
+                        questionLosses = document.getLong("questionLosses")?.toInt() ?: 0
                     )
                 }
                 leaderboardRecyclerView.adapter = LeaderboardAdapter(users)

@@ -1,6 +1,7 @@
 package com.example.triviago.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -20,7 +21,7 @@ class GameActivity : AppCompatActivity() {
     private var questions: List<Question> = emptyList()
     private var currentQuestionIndex: Int = 0
     private var score: Int = 0
-
+    private var difficulty: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,14 +36,21 @@ class GameActivity : AppCompatActivity() {
         // Fetch quiz data
         val numQuestions = intent.getIntExtra("numQuestions", 10)
         category = intent.getStringExtra("category") ?: "Any"
-        val difficulty = intent.getStringExtra("difficulty") ?: "Any"
+        difficulty = intent.getStringExtra("difficulty") ?: "Any"
         type = intent.getStringExtra("type") ?: "Any"
 
         // Initialize the OpenTDBService to fetch questions
         val service = OpenTdbAPIHandler(this)
-        service.fetchAPI(numQuestions, category, difficulty, type ?: "any") { fetchedQuestions ->
-            questions = fetchedQuestions
-            loadFragment(QuizFragment.Companion.newInstance(questions[currentQuestionIndex], currentQuestionIndex + 1, questions.size))
+        service.fetchAPI(numQuestions, category, difficulty, type) { fetchedQuestions ->
+            if (fetchedQuestions.isNotEmpty()) {
+                questions = fetchedQuestions
+                loadFragment(QuizFragment.Companion.newInstance(
+                    questions[currentQuestionIndex],
+                    currentQuestionIndex + 1,
+                    questions.size))
+            } else {
+                Log.e("307TomTag", "Empty question list")
+            }
         }
     }
 
@@ -71,8 +79,14 @@ class GameActivity : AppCompatActivity() {
                 )
             )
         } else {
-            var isBooleanType = (type == "boolean")
-            loadFragment(ResultFragment.Companion.newInstance(category, score, questions.size, isBooleanType))
+            val isBooleanType = type.equals("boolean", ignoreCase = true)
+            Log.d("307TomTag", "Type: $type, IsBooleanType: $isBooleanType")
+            loadFragment(ResultFragment.Companion.newInstance(
+                category,
+                score,
+                questions.size,
+                isBooleanType,
+                difficulty))
         }
     }
 

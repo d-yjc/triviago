@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            app:strokeColor="@android:color/transparent"
             app:cardElevation="4dp"
             app:cardCornerRadius="8dp"
             app:cardBackgroundColor="@color/primaryBackground">
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="Number of Questions"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/primaryDark"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -56,7 +57,7 @@
                     android:text="Question Type"
                     android:textSize="17sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/primaryDark"
                     android:layout_marginBottom="8dp" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
@@ -73,7 +74,8 @@
                         app:cornerRadius="10dp"
                         app:checkedIconTint="@color/primary"
                         app:backgroundTint="@color/white"
-                        android:text="Multiple Choice" />
+                        android:text="@string/multiple_choice"
+                        android:textSize="5pt"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btn_true_false"
@@ -83,7 +85,18 @@
                         app:checkedIconTint="@color/primary"
                         app:backgroundTint="@color/white"
                         app:cornerRadius="10dp"
-                        android:text="True/False" />
+                        android:text="@string/true_false"
+                        android:textSize="5pt"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_any"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:checkedIconTint="@color/primary"
+                        app:backgroundTint="@color/white"
+                        app:cornerRadius="10dp"
+                        android:text="@string/any"
+                        android:textSize="5pt"/>
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -92,6 +105,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:strokeColor="@android:color/transparent"
             app:cardElevation="4dp"
             app:cardCornerRadius="8dp"
             app:cardBackgroundColor="@color/primaryBackground">
@@ -109,7 +123,7 @@
                     android:text="Category"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/primaryDark"
                     android:layout_marginBottom="8dp" />
 
                 <Spinner
@@ -126,7 +140,7 @@
                     android:text="Difficulty"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="@color/primary"
+                    android:textColor="@color/primaryDark"
                     android:layout_marginBottom="8dp" />
 
                 <Spinner

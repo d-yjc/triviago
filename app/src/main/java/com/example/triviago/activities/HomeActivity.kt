@@ -101,7 +101,8 @@ class HomeActivity : AppCompatActivity() {
         val type = when (selectedButtonId) {
             R.id.btn_multiple_choice -> "multiple"
             R.id.btn_true_false -> "boolean"
-            else -> "any" // Default case
+            R.id.btn_any -> "any"
+            else -> "any"
         }
 
         // Start the GameActivity with the retrieved values

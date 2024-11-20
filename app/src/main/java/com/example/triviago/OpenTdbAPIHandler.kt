@@ -9,7 +9,7 @@ import org.json.JSONObject
 
 class OpenTdbAPIHandler(private val context: Context) {
 
-    public fun fetchAPI(
+    fun fetchAPI(
         numQuestions: Int,
         category: String,
         difficulty: String,
@@ -30,7 +30,13 @@ class OpenTdbAPIHandler(private val context: Context) {
     private fun buildURL(numQuestions: Int, category: String, difficulty: String, type: String): String {
         val baseUrl = "https://opentdb.com/api.php?amount=$numQuestions"
         val categoryPart = if (category != "Any") "&category=${getCategoryId(category)}" else ""
-        val difficultyPart = if (difficulty != "Any") "&difficulty=$difficulty" else ""
+        val difficultyPart =
+            when (difficulty) {
+                "Easy" -> "&difficulty=easy"
+                "Medium" -> "&difficulty=medium"
+                "Hard" -> "&difficulty=hard"
+                else -> ""
+            }
         val typePart = when (type) {
             "multiple" -> "&type=multiple"
             "boolean" -> "&type=boolean"

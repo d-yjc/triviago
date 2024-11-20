@@ -7,6 +7,8 @@
 >
 
     <!-- RelativeLayout to enclose the AppBar, Toolbar, and FrameLayout -->
+
+    <!-- Bottom AppBar -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,7 +44,6 @@
             tools:layout="@layout/fragment_home" />
     </RelativeLayout>
 
-    <!-- Bottom AppBar -->
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomappbar"
         android:layout_width="match_parent"
