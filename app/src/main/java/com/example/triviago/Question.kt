@@ -7,7 +7,8 @@ data class Question(
     val questionText: String,
     val isBooleanType: Boolean,
     val answer: String,
-    val options: List<String>
+    val options: List<String>,
+    val difficulty: String
 
 ) : Parcelable {
     // Constructor for creating an object from a Parcel
@@ -15,7 +16,8 @@ data class Question(
         questionText = parcel.readString() ?: "",
         options = parcel.createStringArrayList() ?: emptyList(),
         answer = parcel.readString() ?: "",
-        isBooleanType = parcel.readByte() != 0.toByte()
+        isBooleanType = parcel.readByte() != 0.toByte(),
+        difficulty = parcel.readString() ?: ""
     )
 
     // Writing object's data to a Parcel
@@ -24,6 +26,7 @@ data class Question(
         parcel.writeStringList(options)
         parcel.writeString(answer)
         parcel.writeByte(if (isBooleanType) 1 else 0)
+        parcel.writeString(difficulty)
     }
 
     // Describe the contents of this Parcelable (default 0)

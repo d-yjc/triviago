@@ -8,11 +8,15 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+
 import com.example.triviago.OpenTdbAPIHandler
 import com.example.triviago.Question
 import com.example.triviago.R
 import com.example.triviago.fragments.QuizFragment
 import com.example.triviago.fragments.ResultFragment
+import java.util.Locale
+
+import kotlin.math.*
 
 class GameActivity : AppCompatActivity() {
 
@@ -21,6 +25,7 @@ class GameActivity : AppCompatActivity() {
     private var questions: List<Question> = emptyList()
     private var currentQuestionIndex: Int = 0
     private var score: Int = 0
+    private var points: Int = 0
     private var difficulty: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,8 +68,25 @@ class GameActivity : AppCompatActivity() {
 
     // Handles the user's answer selection and loads the next question or result screen
     fun handleAnswerSelection(selectedAnswer: String, correctAnswer: String) {
-        if (selectedAnswer == correctAnswer) score++  // Increment score if answer is correct
+        val currQuestion = questions[currentQuestionIndex]
+        if (selectedAnswer == correctAnswer) {
+            score++
+            points += calculateQuestionPoints(currQuestion)
+        }
         loadNext()
+    }
+
+    private fun calculateQuestionPoints(question: Question): Int {
+        val difficultyMultiplier = when (question.difficulty.lowercase()) {
+            "easy" -> 1.0
+            "medium" -> E
+            "hard" -> E * E
+            else -> 0.0
+        }
+        val typeMultiplier = if (question.isBooleanType) 0.5 else 1.0
+        val calculatedScore = difficultyMultiplier * typeMultiplier
+
+        return calculatedScore.roundToInt()
     }
 
     // Load the next question or show the result screen if all questions are answered
@@ -79,13 +101,13 @@ class GameActivity : AppCompatActivity() {
                 )
             )
         } else {
-            val isBooleanType = type.equals("boolean", ignoreCase = true)
-            Log.d("307TomTag", "Type: $type, IsBooleanType: $isBooleanType")
+            Log.d("307TomTag", "Type: $type")
             loadFragment(ResultFragment.Companion.newInstance(
                 category,
                 score,
+                points,
                 questions.size,
-                isBooleanType,
+                type,
                 difficulty))
         }
     }

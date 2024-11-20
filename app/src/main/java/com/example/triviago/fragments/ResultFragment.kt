@@ -22,8 +22,9 @@ class ResultFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var category: String = ""
     private var score: Int = 0
+    private var points: Int = 0
     private var numQuestions: Int = 0
-    private var isBooleanType: Boolean = false
+    private var type: String = ""
     private var difficulty: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,14 +44,18 @@ class ResultFragment : Fragment() {
         arguments?.let {
             category = it.getString(ARG_CATEGORY).toString()
             score = it.getInt(ARG_SCORE, 0)
+            points = it.getInt(ARG_POINTS, 0)
             numQuestions = it.getInt(ARG_TOTAL_QUESTIONS, 0)
-            isBooleanType = it.getBoolean(ARG_IS_BOOLEAN, false)
+            type = it.getString(ARG_TYPE).toString()
             difficulty = it.getString(ARG_DIFFICULTY).toString()
         }
         val scoreTextView: TextView = view.findViewById(R.id.scoreTextView)
         scoreTextView.text = "Score: $score/$numQuestions"
 
-        saveScore(calculateQuizPoints(score, difficulty, isBooleanType))
+        val pointTextView: TextView = view.findViewById(R.id.pointTextView)
+        pointTextView.text = "Points gained: $points"
+
+        saveScore(points, score)
         saveQuizResponse()
         val quitButton: Button = view.findViewById(R.id.quitButton)
         quitButton.setOnClickListener{
@@ -59,7 +64,7 @@ class ResultFragment : Fragment() {
         return view
     }
 
-    private fun saveScore(score: Int) {
+    private fun saveScore(points: Int, correctAnswers: Int) {
         val user = FirebaseAuth.getInstance().currentUser
         val db = FirebaseFirestore.getInstance()
 
@@ -69,35 +74,18 @@ class ResultFragment : Fragment() {
             db.runTransaction { transaction ->
                 val snapshot = transaction.get(userDoc)
                 val currentScore = snapshot.getLong("score") ?: 0
-                val updatedScore = currentScore + score
+                val updatedScore = currentScore + points
 
                 val questionWins = snapshot.getLong("questionWins") ?: 0
                 val questionLosses = snapshot.getLong("questionLosses") ?: 0
-                val totalQuestions = arguments?.getInt(ARG_TOTAL_QUESTIONS) ?: 0
-                val wins = score
-                val losses = totalQuestions - wins
-                val updatedWins = questionWins + wins
-                val updatedLosses = questionLosses + losses
+                val updatedWins = questionWins + correctAnswers
+                val updatedLosses = questionLosses + (numQuestions - correctAnswers)
+
                 transaction.update(userDoc, "questionWins", updatedWins)
                 transaction.update(userDoc, "questionLosses", updatedLosses)
                 transaction.update(userDoc, "score", updatedScore)
             }
         }
-    }
-
-    private fun calculateQuizPoints(score: Int, difficulty: String, isBooleanType: Boolean): Int {
-        val result: Int = when (difficulty) {
-            "Easy" -> score
-            "Medium" -> score * E
-            "Hard" -> score * E * E
-            else -> 0
-        } as Int
-        val finalScore = if (isBooleanType) result / 2 else result
-
-        // Log the calculated score for debugging
-        Log.d("QuizPointsCalculator", "Score: $score, Difficulty: $difficulty, isBooleanType: $isBooleanType, Calculated Points: $finalScore")
-
-        return finalScore
     }
 
     private fun saveQuizResponse() {
@@ -109,7 +97,7 @@ class ResultFragment : Fragment() {
             "date" to System.currentTimeMillis(),
             "score" to arguments?.getInt("score"),
             "numQuestions" to arguments?.getInt("numQuestions"),
-            "isBooleanType" to arguments?.getBoolean("isBooleanType")
+            "type" to arguments?.getString("type")
         )
 
         user?.let {
@@ -128,16 +116,18 @@ class ResultFragment : Fragment() {
         private const val ARG_CATEGORY = "category"
         private const val ARG_SCORE = "score"
         private const val ARG_TOTAL_QUESTIONS = "numQuestions"
-        private const val ARG_IS_BOOLEAN = "isBooleanType"
+        private const val ARG_TYPE = "type"
         private const val ARG_DIFFICULTY = "difficulty"
+        private const val ARG_POINTS = "points"
         @JvmStatic
-        fun newInstance(category: String, score: Int, numQuestions: Int, isBooleanType: Boolean, difficulty: String) =
+        fun newInstance(category: String, score: Int, points: Int, numQuestions: Int, type: String, difficulty: String) =
             ResultFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_CATEGORY, category)
                     putInt(ARG_SCORE, score)
+                    putInt(ARG_POINTS, points)
                     putInt(ARG_TOTAL_QUESTIONS, numQuestions)
-                    putBoolean(ARG_IS_BOOLEAN, isBooleanType)
+                    putString(ARG_TYPE, type)
                     putString(ARG_DIFFICULTY, difficulty)
                 }
             }

@@ -15,12 +15,24 @@
         android:textColor="#000"
         android:layout_marginTop="100dp"/>
 
-    <!-- Restart Button -->
+    <!-- Points Display -->
+    <TextView
+        android:id="@+id/pointTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scoreTextView"
+        android:layout_centerHorizontal="true"
+        android:text="Your Points: 0"
+        android:textSize="24sp"
+        android:textColor="#000"
+        android:layout_marginTop="20dp"/> <!-- Adds space between scoreTextView and pointTextView -->
+
+    <!-- Quit Button -->
     <Button
         android:id="@+id/quitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/scoreTextView"
+        android:layout_below="@id/pointTextView"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
         android:text="Quit" />

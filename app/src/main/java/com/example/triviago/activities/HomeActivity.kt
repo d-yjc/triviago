@@ -30,34 +30,38 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
         mAuth = FirebaseAuth.getInstance()
 
-        loadFragment(HomeFragment())
+        val gameButton: ExtendedFloatingActionButton = findViewById(R.id.playbutton)
+        gameButton.setOnClickListener {
+            startGameActivity()
+        }
         val toolbar: MaterialToolbar = findViewById(R.id.materialToolbar)
         setSupportActionBar(toolbar)
         toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_profile))
-        val botNavView: BottomNavigationView = findViewById(R.id.bottomnavview);
+
+        val botNavView: BottomNavigationView = findViewById(R.id.bottomnavview)
+
+        loadFragment(HomeFragment())
+
         botNavView.setOnItemSelectedListener{ item ->
             when (item.itemId) {
                 R.id.home -> {
                     loadFragment(HomeFragment())
+                    gameButton.show()
                     true
                 }
                 R.id.leaderboard -> {
                     loadFragment(LeaderboardFragment())
+                    gameButton.hide()
                     true
                 }
                 R.id.settings -> {
                     loadFragment(SettingsFragment())
+                    gameButton.hide()
                     true
                 }
             }
             return@setOnItemSelectedListener true
         }
-
-        val gameButton: ExtendedFloatingActionButton = findViewById(R.id.playbutton)
-        gameButton.setOnClickListener {
-            startGameActivity()
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

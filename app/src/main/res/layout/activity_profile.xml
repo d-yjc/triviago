@@ -101,16 +101,53 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <!-- Scores Total -->
-                    <TextView
-                        android:id="@+id/tvScores"
-                        android:layout_width="wrap_content"
+                    <!-- Horizontal layout containing tvScores and the right-side layout -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No scores yet!"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal">
+                        <!-- Scores Total -->
+                        <TextView
+                            android:id="@+id/tvScores"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="No scores yet!"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <!-- Vertical layout for tvWinLoss and tvWinRate -->
+                        <LinearLayout
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvWinLoss"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity=""
+                                android:text="0W 0L"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:layout_marginBottom="4dp" />
+
+                            <TextView
+                                android:id="@+id/tvWinRate"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Win rate 0.00%"
+                                android:textColor="@color/black"
+                                android:textSize="16sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+
 
             <!-- Past Quizzes RecyclerView -->
             <com.google.android.material.card.MaterialCardView

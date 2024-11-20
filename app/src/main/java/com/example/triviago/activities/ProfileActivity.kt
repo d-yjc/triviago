@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.triviago.*
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButton
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -22,6 +22,8 @@ class ProfileActivity : AppCompatActivity() {
 
         val userName: TextView = findViewById(R.id.tvUserName)
         val scoreTextView: TextView = findViewById(R.id.tvScores)
+        val tvWinLoss: TextView = findViewById(R.id.tvWinLoss)
+        val tvWinRate: TextView = findViewById(R.id.tvWinRate)
         val user = FirebaseAuth.getInstance().currentUser
         val db = FirebaseFirestore.getInstance()
 
@@ -37,7 +39,20 @@ class ProfileActivity : AppCompatActivity() {
             userName.text = user.email
             db.collection("users").document(user.uid).get().addOnSuccessListener { document ->
                 val totalScore = document.getLong("score") ?: 0
-                scoreTextView.text = "Total score: $totalScore"
+                scoreTextView.text = "Quiz Rating: $totalScore"
+                val wins = document.getLong("questionWins") ?: 0
+                val losses = document.getLong("questionLosses") ?: 0
+                var winRate = (wins.toDouble() / (wins + losses).toDouble()) * 100
+                winRate = String.format("%.2f", winRate).toDouble()
+                tvWinLoss.text = "${wins}W ${losses}L"
+
+                if (wins + losses > 0) {
+                    var winRate = (wins.toDouble() / (wins + losses).toDouble()) * 100
+                    winRate = String.format("%.2f", winRate).toDouble()
+                    tvWinRate.text = "Win rate ${winRate}%"
+                } else {
+                    tvWinRate.text = "Win rate 0%"
+                }
             }
             fetchQuizHistory()
         }
@@ -58,7 +73,7 @@ class ProfileActivity : AppCompatActivity() {
                             date = doc.getLong("date") ?: 0L,
                             score = (doc.getLong("score") ?: 0).toInt(),
                             numQuestions = (doc.getLong("numQuestions") ?: 0).toInt(),
-                            isBooleanType = doc.getBoolean("isBooleanType") == true
+                            type = doc.getString("type") ?: ""
                         )
                     }
                     displayQuizHistory(quizHistory)

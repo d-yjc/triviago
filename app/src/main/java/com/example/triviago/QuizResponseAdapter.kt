@@ -1,5 +1,6 @@
 package com.example.triviago
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,11 @@ class QuizResponseAdapter(
         holder.categoryTextView.text = "${response.category ?: "Unknown"}"
         holder.dateTextView.text = "${formatDate(response.date)}"
         holder.scoreTextView.text = "Score: ${response.score}/${response.numQuestions}"
-        holder.typeTextView.text = if (response.isBooleanType) "True or False" else "Multiple Choice"
+        Log.d("307Tag", response.type)
+        holder.typeTextView.text =
+            if (response.type == "boolean") "True or False"
+            else if (response.type == "multiple") "Multiple Choice"
+            else "Any"
     }
 
     override fun getItemCount(): Int = quizzes.size

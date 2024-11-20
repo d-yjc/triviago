@@ -24,8 +24,7 @@ class LeaderboardAdapter(private val users: List<User>) :
         val user = users[position]
         holder.userRank.text = (position + 1).toString()
         holder.userName.text = user.name
-        holder.userScore.text = "Score: ${user.score}"
+        holder.userScore.text = "Rating: ${user.score}"
     }
-
     override fun getItemCount() = users.size
 }

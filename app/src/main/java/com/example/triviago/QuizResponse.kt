@@ -7,5 +7,5 @@ data class QuizResponse(
     var date: Long = 0L,
     var score: Int = 0,
     var numQuestions : Int = 0,
-    @PropertyName("isBooleanType") var isBooleanType: Boolean = false
+    @PropertyName("type") var type: String = ""
 )

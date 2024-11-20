@@ -93,7 +93,6 @@ class QuizFragment : Fragment() {
     }
 
     private fun checkAnswer(selectedAnswer: String) {
-        // Handle answer checking and pass result back to activity
         (activity as? GameActivity)?.handleAnswerSelection(selectedAnswer, question.answer)
     }
 

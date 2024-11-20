@@ -58,8 +58,9 @@ class OpenTdbAPIHandler(private val context: Context) {
             val correctAnswer = question.getString("correct_answer")
             val incorrectAnswers = question.getJSONArray("incorrect_answers")
             val type = question.getString("type").equals("boolean")
+            val difficulty = question.getString("difficulty")
             var options = fetchOptions(correctAnswer, incorrectAnswers)
-            questions.add(Question(questionText, type, correctAnswer, options))
+            questions.add(Question(questionText, type, correctAnswer, options, difficulty))
         }
         return questions
     }
@@ -82,7 +83,7 @@ class OpenTdbAPIHandler(private val context: Context) {
 
         if (index == -1) {
             Log.e("OpenTDBService", "Category not found: $category. Returning default ID 0.")
-            return 0  // Default to 0 if the category does not match
+            return 0
         }
         return categoryIds[index]
     }
