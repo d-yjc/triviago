@@ -67,7 +67,7 @@ class OpenTdbAPIHandler(private val context: Context) {
         return finalUrl
     }
 
-    public fun parseResponse(response: String): MutableList<Question> {
+    fun parseResponse(response: String): MutableList<Question> {
         val jsonResponse = JSONObject(response)
         val results = jsonResponse.getJSONArray("results")
         val questions = mutableListOf<Question>()
@@ -79,8 +79,9 @@ class OpenTdbAPIHandler(private val context: Context) {
             val incorrectAnswers = question.getJSONArray("incorrect_answers")
             val type = question.getString("type").equals("boolean")
             val difficulty = question.getString("difficulty")
+            val category = question.getString("category")
             var options = fetchOptions(correctAnswer, incorrectAnswers)
-            questions.add(Question(questionText, type, correctAnswer, options, difficulty))
+            questions.add(Question(questionText, type, correctAnswer, options, difficulty, category))
         }
         return questions
     }

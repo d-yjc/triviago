@@ -8,10 +8,10 @@ data class Question(
     val isBooleanType: Boolean,
     val answer: String,
     val options: List<String>,
-    val difficulty: String
+    val difficulty: String,
+    val category: String? = null
 
 ) : Parcelable {
-    // Constructor for creating an object from a Parcel
     private constructor(parcel: Parcel) : this(
         questionText = parcel.readString() ?: "",
         options = parcel.createStringArrayList() ?: emptyList(),
@@ -20,7 +20,6 @@ data class Question(
         difficulty = parcel.readString() ?: ""
     )
 
-    // Writing object's data to a Parcel
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(questionText)
         parcel.writeStringList(options)
@@ -29,10 +28,8 @@ data class Question(
         parcel.writeString(difficulty)
     }
 
-    // Describe the contents of this Parcelable (default 0)
     override fun describeContents(): Int = 0
 
-    // Companion object with the CREATOR field
     companion object CREATOR : Parcelable.Creator<Question> {
         override fun createFromParcel(parcel: Parcel): Question {
             return Question(parcel)

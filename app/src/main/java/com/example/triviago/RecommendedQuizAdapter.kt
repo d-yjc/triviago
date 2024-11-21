@@ -1,20 +1,15 @@
 package com.example.triviago
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.triviago.R
-import com.example.triviago.activities.GameActivity
-import com.example.triviago.Quiz
 import com.google.android.material.card.MaterialCardView
 
 class RecommendedQuizAdapter(
-    private val context: Context,
+    private val context: Context, // Unused here, but absence of this parameter will cause a crash in recommended quizzes??
     private val quizList: List<Quiz>,
     private val itemClickListener: (Quiz) -> Unit
 ) : RecyclerView.Adapter<RecommendedQuizAdapter.ViewHolder>() {
@@ -28,7 +23,6 @@ class RecommendedQuizAdapter(
             titleTextView.text = quiz.title
             descriptionTextView.text = quiz.description
 
-            // Set click listener on the card view
             cardView.setOnClickListener {
                 itemClickListener(quiz)
             }

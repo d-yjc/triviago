@@ -3,7 +3,7 @@
     <quiz>
         <title>Geek Mode: Activated! Take the Challenge!</title>
         <description>Challenge your knowledge and see if you truly embody the ultimate geek!.</description>
-        <apiUrl>https://opentdb.com/api.php?amount=10&amp;category=30</apiUrl>
+        <apiUrl>https://opentdb.com/api.php?amount=20&amp;category=30</apiUrl>
     </quiz>
 
     <quiz>

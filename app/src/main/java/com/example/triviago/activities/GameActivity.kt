@@ -27,51 +27,68 @@ class GameActivity : AppCompatActivity() {
     private var score: Int = 0
     private var points: Int = 0
     private var difficulty: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_game)
 
-        // Setup toolbar as action bar with back button
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Show back button
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)  // Customize icon
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)
 
         val apiUrl = intent.getStringExtra("apiUrl")
         val service = OpenTdbAPIHandler(this)
+
         if (apiUrl != null) {
+            service.fetchAPI(apiUrl) { fetchedQuestions ->
+                if (fetchedQuestions.isNotEmpty()) {
+                    questions = fetchedQuestions
+                    val firstQuestion = questions.first()
+                    category = firstQuestion.category ?: "Unknown"
+                    difficulty = firstQuestion.difficulty
+                    type = if (firstQuestion.isBooleanType) "boolean" else "multiple"
+                    loadFragment(
+                        QuizFragment.newInstance(
+                            questions[currentQuestionIndex],
+                            currentQuestionIndex + 1,
+                            questions.size
+                        )
+                    )
+                } else {
+                    Log.e("GameActivity", "Empty question list from apiUrl")
+                }
+            }
+        } else {
+            val numQuestions = intent.getIntExtra("numQuestions", 10)
+            category = intent.getStringExtra("category") ?: "Any"
+            difficulty = intent.getStringExtra("difficulty") ?: "Any"
+            type = intent.getStringExtra("type") ?: "Any"
 
-        }
-        // Fetch quiz data
-        val numQuestions = intent.getIntExtra("numQuestions", 10)
-        category = intent.getStringExtra("category") ?: "Any"
-        difficulty = intent.getStringExtra("difficulty") ?: "Any"
-        type = intent.getStringExtra("type") ?: "Any"
-
-        // Initialize the OpenTDBService to fetch questions
-        service.fetchAPI(numQuestions, category, difficulty, type) { fetchedQuestions ->
-            if (fetchedQuestions.isNotEmpty()) {
-                questions = fetchedQuestions
-                loadFragment(QuizFragment.Companion.newInstance(
-                    questions[currentQuestionIndex],
-                    currentQuestionIndex + 1,
-                    questions.size))
-            } else {
-                Log.e("307TomTag", "Empty question list")
+            service.fetchAPI(numQuestions, category, difficulty, type) { fetchedQuestions ->
+                if (fetchedQuestions.isNotEmpty()) {
+                    questions = fetchedQuestions
+                    loadFragment(
+                        QuizFragment.newInstance(
+                            questions[currentQuestionIndex],
+                            currentQuestionIndex + 1,
+                            questions.size
+                        )
+                    )
+                } else {
+                    Log.e("GameActivity", "Empty question list")
+                }
             }
         }
     }
 
-
-    // Method to load the given fragment into the fragment container
     private fun loadFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_container, fragment)
             .commit()
     }
 
-    // Handles the user's answer selection and loads the next question or result screen
     fun handleAnswerSelection(selectedAnswer: String, correctAnswer: String) {
         val currQuestion = questions[currentQuestionIndex]
         if (selectedAnswer == correctAnswer) {
@@ -82,7 +99,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun calculateQuestionPoints(question: Question): Int {
-        val difficultyMultiplier = when (question.difficulty.lowercase()) {
+        val difficultyMultiplier = when (question.difficulty.lowercase(Locale.US)) {
             "easy" -> 1.0
             "medium" -> E
             "hard" -> E * E
@@ -94,40 +111,39 @@ class GameActivity : AppCompatActivity() {
         return calculatedScore.roundToInt()
     }
 
-    // Load the next question or show the result screen if all questions are answered
     private fun loadNext() {
         if (currentQuestionIndex < questions.size - 1) {
             currentQuestionIndex++
             loadFragment(
-                QuizFragment.Companion.newInstance(
+                QuizFragment.newInstance(
                     questions[currentQuestionIndex],
                     currentQuestionIndex + 1,
                     questions.size
                 )
             )
         } else {
-            Log.d("307TomTag", "Type: $type")
-            loadFragment(ResultFragment.Companion.newInstance(
-                category,
-                score,
-                points,
-                questions.size,
-                type,
-                difficulty))
+            loadFragment(
+                ResultFragment.newInstance(
+                    category,
+                    score,
+                    points,
+                    questions.size,
+                    type,
+                    difficulty
+                )
+            )
         }
     }
 
-    // Show confirmation dialog when back button is pressed
     private fun showExitConfirm() {
         AlertDialog.Builder(this)
-            .setTitle("Exit com.example.triviago.Quiz")
+            .setTitle("Exit Quiz")
             .setMessage("Are you sure you want to exit the quiz?")
             .setPositiveButton("Yes") { _, _ -> finish() }
             .setNegativeButton("No", null)
             .show()
     }
 
-    // Handle toolbar back button press
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
