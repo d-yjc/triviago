@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 
 import com.example.triviago.activities.LoginActivity
 import com.example.triviago.R
@@ -66,7 +67,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showDataDeletionConfirmationDialog() {
-        AlertDialog.Builder(requireContext())
+        val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle("Delete All Data")
             .setMessage("Are you sure you want to delete all your data? This action cannot be undone.")
             .setPositiveButton("Delete") { dialog, _ ->
@@ -76,7 +77,9 @@ class SettingsFragment : Fragment() {
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .create()
+        alertDialog.show()
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
     }
 
     private fun deleteUserData() {
@@ -115,7 +118,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun showDeleteAccountConfirmationDialog() {
-        AlertDialog.Builder(requireContext())
+        val alertDialog = AlertDialog.Builder(requireContext())
             .setTitle("Delete Account")
             .setMessage("Are you sure you want to delete your account? This action cannot be undone.")
             .setPositiveButton("Confirm") { dialog, _ ->
@@ -125,8 +128,11 @@ class SettingsFragment : Fragment() {
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
             }
-            .show()
+            .create()
+        alertDialog.show()
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
     }
+
 
     private fun deleteUserAccount() {
         val user = mAuth.currentUser

@@ -104,7 +104,7 @@ class ResultFragment : Fragment() {
             db.collection("users").document(user.uid).collection("responses")
                 .add(quizData)
                 .addOnSuccessListener {
-                    Log.d("QuizResponse", "Quiz response saved successfully")
+                    Log.d("QuizResponse", "com.example.triviago.Quiz response saved successfully")
                 }
                 .addOnFailureListener { e ->
                     Log.e("QuizResponse", "Error saving quiz response", e)

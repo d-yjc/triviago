@@ -27,6 +27,26 @@ class OpenTdbAPIHandler(private val context: Context) {
         }
     }
 
+    fun fetchAPI(
+        apiUrl: String,
+        callback: (List<Question>) -> Unit
+    ) {
+        fetchDataFromUrl(apiUrl, callback)
+    }
+
+    private fun fetchDataFromUrl(url: String, callback: (List<Question>) -> Unit) {
+        Ion.with(context).load(url).asString().setCallback { e, result ->
+            if (e != null) {
+                Toast.makeText(context, "Error fetching data", Toast.LENGTH_SHORT).show()
+                Log.e("OpenTdbAPIHandler", "Error fetching data: ${e.message}")
+                callback(emptyList()) // Return an empty list on error
+            } else {
+                val questions = parseResponse(result)
+                callback(questions)
+            }
+        }
+    }
+
     private fun buildURL(numQuestions: Int, category: String, difficulty: String, type: String): String {
         val baseUrl = "https://opentdb.com/api.php?amount=$numQuestions"
         val categoryPart = if (category != "Any") "&category=${getCategoryId(category)}" else ""

@@ -38,6 +38,11 @@ class GameActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)  // Show back button
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_arrow_back)  // Customize icon
 
+        val apiUrl = intent.getStringExtra("apiUrl")
+        val service = OpenTdbAPIHandler(this)
+        if (apiUrl != null) {
+
+        }
         // Fetch quiz data
         val numQuestions = intent.getIntExtra("numQuestions", 10)
         category = intent.getStringExtra("category") ?: "Any"
@@ -45,7 +50,6 @@ class GameActivity : AppCompatActivity() {
         type = intent.getStringExtra("type") ?: "Any"
 
         // Initialize the OpenTDBService to fetch questions
-        val service = OpenTdbAPIHandler(this)
         service.fetchAPI(numQuestions, category, difficulty, type) { fetchedQuestions ->
             if (fetchedQuestions.isNotEmpty()) {
                 questions = fetchedQuestions
@@ -58,6 +62,7 @@ class GameActivity : AppCompatActivity() {
             }
         }
     }
+
 
     // Method to load the given fragment into the fragment container
     private fun loadFragment(fragment: Fragment) {
@@ -115,7 +120,7 @@ class GameActivity : AppCompatActivity() {
     // Show confirmation dialog when back button is pressed
     private fun showExitConfirm() {
         AlertDialog.Builder(this)
-            .setTitle("Exit Quiz")
+            .setTitle("Exit com.example.triviago.Quiz")
             .setMessage("Are you sure you want to exit the quiz?")
             .setPositiveButton("Yes") { _, _ -> finish() }
             .setNegativeButton("No", null)

@@ -1,16 +1,25 @@
 package com.example.triviago.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.NumberPicker
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.triviago.Quiz
 import com.example.triviago.R
+import com.example.triviago.activities.GameActivity
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.slider.Slider
+import org.xmlpull.v1.XmlPullParser
+
+import com.example.triviago.RecommendedQuizAdapter
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +36,9 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var recommendedQuizAdapter: RecommendedQuizAdapter
+    private lateinit var recommendedQuizzesRecyclerView: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -41,6 +53,64 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+
+        setUpQuizOptions(view)
+
+        val recommendedQuizzes = getRecommendedQuizzes()
+        setUpRecommendedQuizzesRecyclerView(view, recommendedQuizzes)
+        return view
+    }
+
+    private fun getRecommendedQuizzes(): List<Quiz> {
+        val quizList = mutableListOf<Quiz>()
+        val parser = resources.getXml(R.xml.recommended_quizzes)
+        var eventType = parser.eventType
+        var currentQuiz: Quiz? = null
+
+        while (eventType != XmlPullParser.END_DOCUMENT) {
+            val name = parser.name
+            when (eventType) {
+                XmlPullParser.START_TAG -> {
+                    if (name == "quiz") {
+                        currentQuiz = Quiz(title = "", description = "", apiUrl = "")
+                    } else if (currentQuiz != null) {
+                        when (name) {
+                            "title" -> currentQuiz.title = parser.nextText()
+                            "description" -> currentQuiz.description = parser.nextText()
+                            "apiUrl" -> currentQuiz.apiUrl = parser.nextText()
+                        }
+                    }
+                }
+                XmlPullParser.END_TAG -> {
+                    if (name == "quiz" && currentQuiz != null) {
+                        quizList.add(currentQuiz)
+                        currentQuiz = null
+                    }
+                }
+            }
+            eventType = parser.next()
+        }
+
+        return quizList
+    }
+
+    private fun setUpRecommendedQuizzesRecyclerView(view: View, quizList: List<Quiz>) {
+        recommendedQuizzesRecyclerView = view.findViewById(R.id.recommended_quizzes_recycler_view)
+        recommendedQuizAdapter = RecommendedQuizAdapter(requireContext(), quizList) { quiz ->
+            startGameActivityWithQuiz(quiz)
+        }
+        recommendedQuizzesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recommendedQuizzesRecyclerView.adapter = recommendedQuizAdapter
+    }
+
+    private fun startGameActivityWithQuiz(quiz: Quiz) {
+        val intent = Intent(requireContext(), GameActivity::class.java).apply {
+            putExtra("apiUrl", quiz.apiUrl)
+        }
+        startActivity(intent)
+    }
+
+    private fun setUpQuizOptions(view: View) {
         // Number of Questions Slider
         val questionSlider: Slider = view.findViewById(R.id.num_questions_slider)
         questionSlider.valueFrom = 1f
@@ -70,10 +140,7 @@ class HomeFragment : Fragment() {
         val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = categoryAdapter
-
-        return view
     }
-
     companion object {
         /**
          * Use this factory method to create a new instance of

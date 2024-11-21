@@ -13,6 +13,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import java.util.Locale
 
 class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,19 +40,31 @@ class ProfileActivity : AppCompatActivity() {
             userName.text = user.email
             db.collection("users").document(user.uid).get().addOnSuccessListener { document ->
                 val totalScore = document.getLong("score") ?: 0
-                scoreTextView.text = "Quiz Rating: $totalScore"
+                scoreTextView.text = buildString {
+                    append("Rating: ")
+                    append(totalScore)
+                }
                 val wins = document.getLong("questionWins") ?: 0
                 val losses = document.getLong("questionLosses") ?: 0
                 var winRate = (wins.toDouble() / (wins + losses).toDouble()) * 100
-                winRate = String.format("%.2f", winRate).toDouble()
-                tvWinLoss.text = "${wins}W ${losses}L"
+                winRate = String.format(Locale.US, "%.2f", winRate).toDouble()
+                tvWinLoss.text = buildString {
+                    append(wins)
+                    append("W ")
+                    append(losses)
+                    append("L")
+                }
 
                 if (wins + losses > 0) {
                     var winRate = (wins.toDouble() / (wins + losses).toDouble()) * 100
-                    winRate = String.format("%.2f", winRate).toDouble()
-                    tvWinRate.text = "Win rate ${winRate}%"
+                    winRate = String.format(Locale.US, "%.2f", winRate).toDouble()
+                    tvWinRate.text = buildString {
+                        append("Win rate ")
+                        append(winRate)
+                        append("%")
+                    }
                 } else {
-                    tvWinRate.text = "Win rate 0%"
+                    tvWinRate.text = getString(R.string.null_winrate)
                 }
             }
             fetchQuizHistory()
@@ -89,5 +102,4 @@ class ProfileActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = QuizResponseAdapter(pastQuizzes)
     }
-
 }
