@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.triviago.activities.GameActivity
-import com.example.triviago.Question
+import com.example.triviago.models.Question
 import com.example.triviago.R
 
 class QuizFragment : Fragment() {

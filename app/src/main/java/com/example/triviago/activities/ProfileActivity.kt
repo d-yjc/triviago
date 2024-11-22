@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.triviago.*
+import com.example.triviago.models.QuizResponse
 import com.google.android.material.appbar.MaterialToolbar
 
 import com.google.firebase.auth.FirebaseAuth

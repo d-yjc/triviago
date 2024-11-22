@@ -1,208 +1,139 @@
 package com.example.triviago.fragments
 
-
-import android.content.Intent
-import android.content.res.Configuration
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
+import android.app.TimePickerDialog
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.google.android.material.switchmaterial.SwitchMaterial
+import java.util.Calendar
+import java.util.concurrent.TimeUnit
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
-import androidx.core.content.ContextCompat
-
-import com.example.triviago.activities.LoginActivity
+import androidx.fragment.app.Fragment
 import com.example.triviago.R
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.example.triviago.TriviaNotificationWorker
+import java.util.Locale
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SettingsFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
-    private lateinit var mAuth: FirebaseAuth
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+
+    private lateinit var switchEnableNotifications: SwitchMaterial
+    private lateinit var layoutSetNotificationTime: LinearLayout
+    private lateinit var textNotificationTimeValue: TextView
+
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
-        mAuth = FirebaseAuth.getInstance()
 
-        val layoutDataManagement = view.findViewById<ImageButton>(R.id.button_data_management)
-        layoutDataManagement.setOnClickListener {
-            showDataDeletionConfirmationDialog()
-        }
+        switchEnableNotifications = view.findViewById(R.id.switch_enable_notifications)
+        layoutSetNotificationTime = view.findViewById(R.id.layout_set_notification_time)
+        textNotificationTimeValue = view.findViewById(R.id.text_notification_time_value)
 
-        val layoutLogout = view.findViewById<ImageButton>(R.id.button_logout)
-        layoutLogout.setOnClickListener {
-            showLogoutConfirmationDialog()
-        }
-
-        val layoutDeleteAccount = view.findViewById<ImageButton>(R.id.button_delete_account)
-        layoutDeleteAccount.setOnClickListener {
-            showDeleteAccountConfirmationDialog()
-        }
+        sharedPreferences = requireContext()
+            .getSharedPreferences("app_settings", Context.MODE_PRIVATE)
 
         return view
     }
 
-    private fun showDataDeletionConfirmationDialog() {
-        val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Delete All Data")
-            .setMessage("Are you sure you want to delete all your data? This action cannot be undone.")
-            .setPositiveButton("Delete") { dialog, _ ->
-                deleteUserData()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-        alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    private fun deleteUserData() {
-        val user = mAuth.currentUser
-        if (user != null) {
-            val db = FirebaseFirestore.getInstance()
-            val userDocRef = db.collection("users").document(user.uid)
+        // Load saved preferences
+        val notificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", false)
+        val notificationHour = sharedPreferences.getInt("notification_hour", 8)
+        val notificationMinute = sharedPreferences.getInt("notification_minute", 0)
 
-            // First, delete all documents in 'responses' subcollection
-            val responsesCollectionRef = userDocRef.collection("responses")
-            responsesCollectionRef.get()
-                .addOnSuccessListener { querySnapshot ->
-                    val batch = db.batch()
-                    for (document in querySnapshot.documents) {
-                        batch.delete(document.reference)
-                    }
-                    // Commit the batch
-                    batch.commit()
-                        .addOnSuccessListener {
-                            userDocRef.delete()
-                                .addOnSuccessListener {
-                                    Toast.makeText(requireContext(), "All your data has been deleted.", Toast.LENGTH_SHORT).show()
-                                }
-                                .addOnFailureListener { e ->
-                                    Toast.makeText(requireContext(), "Failed to delete user data: ${e.message}", Toast.LENGTH_LONG).show()
-                                }
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(requireContext(), "Failed to delete responses: ${e.message}", Toast.LENGTH_LONG).show()
-                        }
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Failed to retrieve responses: ${e.message}", Toast.LENGTH_LONG).show()
-                }
+        // Initialize UI
+        switchEnableNotifications.isChecked = notificationsEnabled
+        layoutSetNotificationTime.isEnabled = notificationsEnabled
+        layoutSetNotificationTime.isClickable = notificationsEnabled
+        textNotificationTimeValue.text = String.format(Locale.getDefault(),"%02d:%02d", notificationHour, notificationMinute)
+
+        // Switch listener
+        switchEnableNotifications.setOnCheckedChangeListener { _, isChecked ->
+            layoutSetNotificationTime.isEnabled = isChecked
+            layoutSetNotificationTime.isClickable = isChecked
+            sharedPreferences.edit().putBoolean("notifications_enabled", isChecked).apply()
+
+            if (isChecked) {
+                scheduleDailyNotification(notificationHour, notificationMinute)
+                Toast.makeText(requireContext(), "Notifications Enabled", Toast.LENGTH_SHORT).show()
+            } else {
+                cancelDailyNotification()
+                Toast.makeText(requireContext(), "Notifications Disabled", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Time Picker Listener
+        layoutSetNotificationTime.setOnClickListener {
+            val currentHour = sharedPreferences.getInt("notification_hour", 8)
+            val currentMinute = sharedPreferences.getInt("notification_minute", 0)
+            showTimePickerDialog(currentHour, currentMinute)
         }
     }
 
-    private fun showDeleteAccountConfirmationDialog() {
-        val alertDialog = AlertDialog.Builder(requireContext())
-            .setTitle("Delete Account")
-            .setMessage("Are you sure you want to delete your account? This action cannot be undone.")
-            .setPositiveButton("Confirm") { dialog, _ ->
-                deleteUserAccount()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-        alertDialog.show()
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark))
+    private fun showTimePickerDialog(currentHour: Int, currentMinute: Int) {
+        val timePicker = TimePickerDialog(
+            requireContext(),
+            { _, hourOfDay, minute ->
+                // Save the selected time
+                sharedPreferences.edit()
+                    .putInt("notification_hour", hourOfDay)
+                    .putInt("notification_minute", minute)
+                    .apply()
+
+                textNotificationTimeValue.text = String.format("%02d:%02d", hourOfDay, minute)
+
+                // Reschedule the notification with the new time
+                scheduleDailyNotification(hourOfDay, minute)
+
+                Toast.makeText(requireContext(), "Notification Time Set to $hourOfDay:$minute", Toast.LENGTH_SHORT).show()
+            },
+            currentHour,
+            currentMinute,
+            true
+        )
+        timePicker.show()
     }
 
-
-    private fun deleteUserAccount() {
-        val user = mAuth.currentUser
-        if (user != null) {
-            val db = FirebaseFirestore.getInstance()
-            val userDocRef = db.collection("users").document(user.uid)
-
-            userDocRef.delete()
-                .addOnSuccessListener {
-                    // Then, delete the user's account
-                    user.delete()
-                        .addOnSuccessListener {
-                            Toast.makeText(requireContext(), "Your account has been deleted.", Toast.LENGTH_SHORT).show()
-                            startLoginActivity()
-                        }
-                        .addOnFailureListener { e ->
-                            Toast.makeText(requireContext(), "Failed to delete account: ${e.message}", Toast.LENGTH_LONG).show()
-                        }
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(requireContext(), "Failed to delete data: ${e.message}", Toast.LENGTH_LONG).show()
-                }
-        } else {
-            Toast.makeText(requireContext(), "User not logged in.", Toast.LENGTH_SHORT).show()
+    private fun scheduleDailyNotification(hour: Int, minute: Int) {
+        val currentTime = Calendar.getInstance()
+        val notificationTime = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, hour)
+            set(Calendar.MINUTE, minute)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
         }
+
+        if (notificationTime.before(currentTime)) {
+            notificationTime.add(Calendar.DAY_OF_MONTH, 1)
+        }
+
+        val initialDelay = notificationTime.timeInMillis - currentTime.timeInMillis
+        val workRequest = PeriodicWorkRequestBuilder<TriviaNotificationWorker>(1, TimeUnit.DAYS)
+            .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
+            .build()
+
+        WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
+            "DailyTriviaNotification",
+            ExistingPeriodicWorkPolicy.REPLACE,
+            workRequest
+        )
     }
 
-    private fun showLogoutConfirmationDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Log Out")
-            .setMessage("Are you sure you want to log out?")
-            .setPositiveButton("Log Out") { dialog, _ ->
-                mAuth.signOut()
-                startLoginActivity()
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    private fun startLoginActivity() {
-        val intent = Intent(activity, LoginActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
-    }
-
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SettingsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun cancelDailyNotification() {
+        WorkManager.getInstance(requireContext()).cancelUniqueWork("DailyTriviaNotification")
     }
 }

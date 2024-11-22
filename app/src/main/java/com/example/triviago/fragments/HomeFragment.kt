@@ -8,14 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.triviago.Quiz
+import com.example.triviago.models.Quiz
 import com.example.triviago.R
 import com.example.triviago.activities.GameActivity
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.slider.Slider
 import org.xmlpull.v1.XmlPullParser
 

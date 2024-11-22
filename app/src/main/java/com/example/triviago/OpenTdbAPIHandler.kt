@@ -3,6 +3,7 @@ package com.example.triviago
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.triviago.models.Question
 import com.koushikdutta.ion.Ion
 import org.json.JSONArray
 import org.json.JSONObject
@@ -81,7 +82,16 @@ class OpenTdbAPIHandler(private val context: Context) {
             val difficulty = question.getString("difficulty")
             val category = question.getString("category")
             var options = fetchOptions(correctAnswer, incorrectAnswers)
-            questions.add(Question(questionText, type, correctAnswer, options, difficulty, category))
+            questions.add(
+                Question(
+                    questionText,
+                    type,
+                    correctAnswer,
+                    options,
+                    difficulty,
+                    category
+                )
+            )
         }
         return questions
     }

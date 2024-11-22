@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 
 import com.example.triviago.OpenTdbAPIHandler
-import com.example.triviago.Question
+import com.example.triviago.models.Question
 import com.example.triviago.R
 import com.example.triviago.fragments.QuizFragment
 import com.example.triviago.fragments.ResultFragment

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.triviago.LeaderboardAdapter
 import com.example.triviago.R
 import com.google.firebase.firestore.FirebaseFirestore
-import com.example.triviago.User
+import com.example.triviago.models.User
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

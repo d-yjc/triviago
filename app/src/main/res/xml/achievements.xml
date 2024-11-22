@@ -2,7 +2,7 @@
 <achievements>
     <achievement
         id="1"
-        title="First com.example.triviago.Quiz Completed"
+        title="First com.example.triviago.models.Quiz Completed"
         description="Complete your first quiz"
         event="QUIZ_COMPLETED"
         points="10" />
