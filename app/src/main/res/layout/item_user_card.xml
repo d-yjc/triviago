@@ -22,6 +22,7 @@
             android:text="0"
             android:textStyle="bold"
             android:textSize="24sp"
+            android:textColor="@color/darkBackground"
             android:layout_marginEnd="16dp" />
 
         <LinearLayout
@@ -36,13 +37,15 @@
                 android:layout_height="wrap_content"
                 android:text="User Name"
                 android:textStyle="bold"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textColor="@color/darkBackground"/>
 
             <TextView
                 android:id="@+id/userScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Score: 100" />
+                android:text="Score: 100"
+                android:textColor="?attr/colorSecondary"/>
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

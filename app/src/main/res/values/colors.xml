@@ -5,8 +5,13 @@
     <color name="primaryBackground">#eef9e6</color>
     <color name="primaryLight">#d3efc0</color>
     <color name="primaryDark">#006f00</color>
+    <color name="complementaryDark">#4402af</color>
     <color name="complementary">#6e05b9</color>
+    <color name="complementaryLight">#b63ed5</color>
     <color name="complementaryContainer">#e5bef0</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="teal200">#80CBC4</color>
+    <color name="gold">#ffe900</color>
+    <color name="darkBackground">#18141c</color>
 </resources>

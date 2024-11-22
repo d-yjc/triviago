@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment"
-    android:background="@color/white">
+    android:background="?attr/colorOnBackground">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -49,21 +49,21 @@
                         android:id="@+id/num_questions_slider"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/select_number_of_questions"
                         android:stepSize="0"
                         android:valueFrom="1"
                         android:valueTo="50"
-                        android:contentDescription="@string/select_number_of_questions"
                         app:trackColor="@color/primaryLight" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
                         android:text="Question Type"
-                        android:textSize="17sp"
-                        android:textStyle="bold"
                         android:textColor="@color/primaryDark"
-                        android:layout_marginBottom="8dp" />
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/question_type_toggle_group"
@@ -76,33 +76,36 @@
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:cornerRadius="10dp"
-                            app:checkedIconTint="@color/primary"
-                            app:backgroundTint="@color/white"
                             android:text="@string/multiple_choice"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/primary"
+                            app:backgroundTint="@color/white"
+                            app:checkedIconTint="@color/primary"
+                            app:cornerRadius="10dp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_true_false"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:checkedIconTint="@color/primary"
-                            app:backgroundTint="@color/white"
-                            app:cornerRadius="10dp"
                             android:text="@string/true_false"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/primary"
+                            app:backgroundTint="@color/white"
+                            app:checkedIconTint="@color/primary"
+                            app:cornerRadius="10dp" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_any"
                             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:checkedIconTint="@color/primary"
-                            app:backgroundTint="@color/white"
-                            app:cornerRadius="10dp"
                             android:text="@string/any"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/primary"
+                            app:backgroundTint="@color/white"
+                            app:checkedIconTint="@color/primary"
+                            app:cornerRadius="10dp" />
                     </com.google.android.material.button.MaterialButtonToggleGroup>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

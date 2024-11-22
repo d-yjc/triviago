@@ -14,7 +14,19 @@
         android:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:elevation="4dp">
     </androidx.appcompat.widget.Toolbar>
+    <ProgressBar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_below="@id/toolbar"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="0"
+        android:progressTint="@color/complementary"
+        android:backgroundTint="@color/primaryLight"
 
+        style="?android:attr/progressBarStyleHorizontal"/>
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

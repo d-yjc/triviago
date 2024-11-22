@@ -1,40 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@android:color/white">
 
-    <!-- Score Display -->
-    <TextView
-        android:id="@+id/scoreTextView"
-        android:layout_width="wrap_content"
+    <!-- Celebration Animation -->
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/celebrationAnimation"
+        android:layout_width="500dp"
+        android:layout_height="200dp"
+        app:lottie_rawRes="@raw/celebration"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false" />
+
+    <!-- MaterialCard for Score -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/scoreCard"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_centerHorizontal="true"
-        android:text="Your Score: 0"
-        android:textSize="24sp"
-        android:textColor="#000"
-        android:layout_marginTop="100dp"/>
+        app:cardBackgroundColor="@color/primaryLight"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp">
 
-    <!-- Points Display -->
-    <TextView
-        android:id="@+id/pointTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/scoreTextView"
-        android:layout_centerHorizontal="true"
-        android:text="Your Points: 0"
-        android:textSize="24sp"
-        android:textColor="#000"
-        android:layout_marginTop="20dp"/> <!-- Adds space between scoreTextView and pointTextView -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center"
+            app:strokeColor="@android:color/transparent">
 
-    <!-- Quit Button -->
-    <Button
+            <!-- Score Display -->
+            <TextView
+                android:id="@+id/scoreTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Score: 0"
+                android:textSize="24sp"
+                android:textColor="@android:color/black"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Points Display -->
+            <TextView
+                android:id="@+id/pointTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Points: 0"
+                android:textSize="20sp"
+                android:textColor="@color/complementaryLight" />
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/quitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pointTextView"
+        android:layout_below="@+id/scoreCard"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:text="Quit" />
-
+        android:layout_marginTop="20pt"
+        android:text="Quit"/>
 </RelativeLayout>
+

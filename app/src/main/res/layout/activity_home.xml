@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:gravity="bottom"
             android:elevation="0dp"
+
             style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
             app:menu="@menu/bottom_nav_bar"
             app:labelVisibilityMode="labeled" />

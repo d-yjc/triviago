@@ -3,6 +3,9 @@
     <style name="Base.Theme.TriviaGo" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <item name="android:fontFamily">@font/rubik_regular</item>
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorOnBackground">@color/darkBackground</item>
+        <item name="colorPrimary">@color/complementaryDark</item>
+        <item name="colorSecondary">@color/complementaryDark</item>
+
     </style>
 </resources>

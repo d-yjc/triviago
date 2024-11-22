@@ -1,8 +1,11 @@
 package com.example.triviago.activities
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
+import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +31,8 @@ class GameActivity : AppCompatActivity() {
     private var points: Int = 0
     private var difficulty: String = ""
 
+    private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,6 +45,8 @@ class GameActivity : AppCompatActivity() {
 
         val apiUrl = intent.getStringExtra("apiUrl")
         val service = OpenTdbAPIHandler(this)
+
+        progressBar = findViewById(R.id.progressBar)
 
         if (apiUrl != null) {
             service.fetchAPI(apiUrl) { fetchedQuestions ->
@@ -114,25 +121,53 @@ class GameActivity : AppCompatActivity() {
     private fun loadNext() {
         if (currentQuestionIndex < questions.size - 1) {
             currentQuestionIndex++
-            loadFragment(
-                QuizFragment.newInstance(
-                    questions[currentQuestionIndex],
-                    currentQuestionIndex + 1,
-                    questions.size
+
+            Handler(mainLooper).postDelayed({
+                loadFragmentWithAnimation(
+                    QuizFragment.newInstance(
+                        questions[currentQuestionIndex],
+                        currentQuestionIndex + 1,
+                        questions.size
+                    )
                 )
-            )
+            }, 500) // 500ms delay
         } else {
-            loadFragment(
-                ResultFragment.newInstance(
-                    category,
-                    score,
-                    points,
-                    questions.size,
-                    type,
-                    difficulty
+            // Load ResultFragment with a transition
+            Handler(mainLooper).postDelayed({
+                loadFragmentWithAnimation(
+                    ResultFragment.newInstance(
+                        category,
+                        score,
+                        points,
+                        questions.size,
+                        type,
+                        difficulty
+                    )
                 )
-            )
+            }, 500) // 500ms delay
         }
+        updateProgressBar()
+    }
+
+    private fun updateProgressBar() {
+        val progress = (currentQuestionIndex + 1) * 100 / questions.size
+
+        ObjectAnimator.ofInt(progressBar, "progress", progressBar.progress, progress).apply {
+            duration = 300 // Animation duration in milliseconds
+            start()
+        }
+    }
+
+    private fun loadFragmentWithAnimation(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_right,  // Enter animation
+                R.anim.slide_out_left, // Exit animation
+                R.anim.slide_in_left,  // Pop enter animation
+                R.anim.slide_out_right // Pop exit animation
+            )
+            .replace(R.id.fragment_container, fragment)
+            .commit()
     }
 
     private fun showExitConfirm() {

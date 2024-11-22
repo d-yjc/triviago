@@ -1,13 +1,18 @@
 package com.example.triviago.fragments
 
+import android.animation.ObjectAnimator
+import android.animation.AnimatorSet
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Button
 import android.widget.TextView
+import com.airbnb.lottie.LottieAnimationView
 import com.example.triviago.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -26,6 +31,8 @@ class ResultFragment : Fragment() {
     private var numQuestions: Int = 0
     private var type: String = ""
     private var difficulty: String = ""
+
+    private var mediaPlayer: MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +61,22 @@ class ResultFragment : Fragment() {
 
         val pointTextView: TextView = view.findViewById(R.id.pointTextView)
         pointTextView.text = "Points gained: $points"
+        val lottieAnimation = view.findViewById<LottieAnimationView>(R.id.celebrationAnimation)
+
+        scoreTextView.translationY = -50f
+        scoreTextView.alpha = 0f
+        pointTextView.translationY = -50f
+        pointTextView.alpha = 0f
+
+        animateScoreAndPoint(scoreTextView, pointTextView)
+
+        lottieAnimation.playAnimation()
+
+
+        playResultSound()
+
+        //animateTextView(scoreTextView)
+        //animateTextView(pointTextView)
 
         saveScore(points, score)
         saveQuizResponse()
@@ -62,6 +85,45 @@ class ResultFragment : Fragment() {
             activity?.finish()
         }
         return view
+    }
+
+    private fun animateScoreAndPoint(scoreTextView: TextView, pointTextView: TextView) {
+        // Score animation (fade in and slide down)
+        val scoreFadeIn = ObjectAnimator.ofFloat(scoreTextView, "alpha", 0f, 1f)
+        val scoreSlideDown = ObjectAnimator.ofFloat(scoreTextView, "translationY", -100f, 0f)
+        val scoreAnimatorSet = AnimatorSet().apply {
+            playTogether(scoreFadeIn, scoreSlideDown)
+            duration = 500
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+
+        // Point animation (fade in and slide down)
+        val pointFadeIn = ObjectAnimator.ofFloat(pointTextView, "alpha", 0f, 1f)
+        val pointSlideDown = ObjectAnimator.ofFloat(pointTextView, "translationY", -100f, 0f)
+        val pointAnimatorSet = AnimatorSet().apply {
+            playTogether(pointFadeIn, pointSlideDown)
+            duration = 500
+            interpolator = AccelerateDecelerateInterpolator()
+        }
+
+        // Play animations in sequence
+        AnimatorSet().apply {
+            playSequentially(scoreAnimatorSet, pointAnimatorSet)
+            start()
+        }
+    }
+
+    private fun playResultSound() {
+        // Initialize MediaPlayer with the result sound
+        mediaPlayer = MediaPlayer.create(requireContext(), R.raw.result)
+        mediaPlayer?.start()
+    }
+
+    private fun animateTextView(textView: TextView) {
+        ObjectAnimator.ofFloat(textView, "alpha", 0f, 1f).apply {
+            duration = 500 // 500ms fade-in duration
+            start()
+        }
     }
 
     private fun saveScore(points: Int, correctAnswers: Int) {

@@ -2,6 +2,7 @@ package com.example.triviago.fragments
 
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 
@@ -13,6 +14,8 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.content.ContextCompat
 
 import com.example.triviago.activities.LoginActivity
@@ -63,6 +66,7 @@ class SettingsFragment : Fragment() {
         layoutDeleteAccount.setOnClickListener {
             showDeleteAccountConfirmationDialog()
         }
+
         return view
     }
 
