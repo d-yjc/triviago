@@ -130,9 +130,9 @@ class GameActivity : AppCompatActivity() {
                         questions.size
                     )
                 )
-            }, 500) // 500ms delay
+            }, 500)
         } else {
-            // Load ResultFragment with a transition
+            //Load with a transition
             Handler(mainLooper).postDelayed({
                 loadFragmentWithAnimation(
                     ResultFragment.newInstance(
@@ -144,7 +144,7 @@ class GameActivity : AppCompatActivity() {
                         difficulty
                     )
                 )
-            }, 500) // 500ms delay
+            }, 500)
         }
         updateProgressBar()
     }
@@ -153,7 +153,7 @@ class GameActivity : AppCompatActivity() {
         val progress = (currentQuestionIndex + 1) * 100 / questions.size
 
         ObjectAnimator.ofInt(progressBar, "progress", progressBar.progress, progress).apply {
-            duration = 300 // Animation duration in milliseconds
+            duration = 300 //(ms)
             start()
         }
     }
@@ -161,10 +161,10 @@ class GameActivity : AppCompatActivity() {
     private fun loadFragmentWithAnimation(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(
-                R.anim.slide_in_right,  // Enter animation
-                R.anim.slide_out_left, // Exit animation
-                R.anim.slide_in_left,  // Pop enter animation
-                R.anim.slide_out_right // Pop exit animation
+                R.anim.slide_in_right,  //Enter,
+                R.anim.slide_out_left,  //Exit.
+                R.anim.slide_in_left,   // Pop enter,
+                R.anim.slide_out_right  // Pop exit.
             )
             .replace(R.id.fragment_container, fragment)
             .commit()

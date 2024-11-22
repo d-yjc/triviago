@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.triviago.models.User
+import java.util.Locale
 
 class LeaderboardAdapter(private val users: List<User>) :
     RecyclerView.Adapter<LeaderboardAdapter.LeaderboardViewHolder>() {
@@ -23,9 +24,12 @@ class LeaderboardAdapter(private val users: List<User>) :
 
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
         val user = users[position]
-        holder.userRank.text = (position + 1).toString()
+        holder.userRank.text = String.format(Locale.getDefault(), "%d", position + 1)
         holder.userName.text = user.name
-        holder.userScore.text = "Rating: ${user.score}"
+        holder.userScore.text = buildString {
+            append("Rating: ")
+            append(user.score)
+        }
     }
     override fun getItemCount() = users.size
 }

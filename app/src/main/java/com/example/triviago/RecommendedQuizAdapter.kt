@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.triviago.models.Quiz
@@ -18,11 +19,14 @@ class RecommendedQuizAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val titleTextView: TextView = itemView.findViewById(R.id.quiz_title)
         val descriptionTextView: TextView = itemView.findViewById(R.id.quiz_description)
+        val iconImageView: ImageView = itemView.findViewById(R.id.quiz_icon)
         val cardView: MaterialCardView = itemView.findViewById(R.id.recommended_quiz_card)
 
         fun bind(quiz: Quiz) {
             titleTextView.text = quiz.title
             descriptionTextView.text = quiz.description
+
+            iconImageView.setImageResource(quiz.icon)
 
             cardView.setOnClickListener {
                 itemClickListener(quiz)

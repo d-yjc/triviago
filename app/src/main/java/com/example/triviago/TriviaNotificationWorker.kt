@@ -44,11 +44,10 @@ class TriviaNotificationWorker(appContext: Context, workerParams: WorkerParamete
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Build the notification
         val notification = NotificationCompat.Builder(applicationContext, CHANNEL_ID)
             .setContentTitle("Trivia, Let's Go!")
             .setContentText("Make your screen time count. Take a quick trivia!")
-            .setSmallIcon(R.drawable.ic_play) // Replace with your own icon
+            .setSmallIcon(R.drawable.ic_play)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(NotificationCompat.PRIORITY_HIGH)

@@ -34,7 +34,6 @@ class SettingsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_settings, container, false)
 
         switchEnableNotifications = view.findViewById(R.id.switch_enable_notifications)
@@ -50,18 +49,15 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Load saved preferences
         val notificationsEnabled = sharedPreferences.getBoolean("notifications_enabled", false)
         val notificationHour = sharedPreferences.getInt("notification_hour", 8)
         val notificationMinute = sharedPreferences.getInt("notification_minute", 0)
 
-        // Initialize UI
         switchEnableNotifications.isChecked = notificationsEnabled
         layoutSetNotificationTime.isEnabled = notificationsEnabled
         layoutSetNotificationTime.isClickable = notificationsEnabled
         textNotificationTimeValue.text = String.format(Locale.getDefault(),"%02d:%02d", notificationHour, notificationMinute)
 
-        // Switch listener
         switchEnableNotifications.setOnCheckedChangeListener { _, isChecked ->
             layoutSetNotificationTime.isEnabled = isChecked
             layoutSetNotificationTime.isClickable = isChecked
@@ -76,7 +72,6 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // Time Picker Listener
         layoutSetNotificationTime.setOnClickListener {
             val currentHour = sharedPreferences.getInt("notification_hour", 8)
             val currentMinute = sharedPreferences.getInt("notification_minute", 0)
@@ -88,18 +83,21 @@ class SettingsFragment : Fragment() {
         val timePicker = TimePickerDialog(
             requireContext(),
             { _, hourOfDay, minute ->
-                // Save the selected time
                 sharedPreferences.edit()
                     .putInt("notification_hour", hourOfDay)
                     .putInt("notification_minute", minute)
                     .apply()
 
-                textNotificationTimeValue.text = String.format("%02d:%02d", hourOfDay, minute)
-
-                // Reschedule the notification with the new time
+                textNotificationTimeValue.text = String.format(
+                    Locale.getDefault(),
+                    "%02d:%02d",
+                    hourOfDay,
+                    minute
+                )
                 scheduleDailyNotification(hourOfDay, minute)
-
-                Toast.makeText(requireContext(), "Notification Time Set to $hourOfDay:$minute", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Notification Time Set to $hourOfDay:$minute", Toast.LENGTH_SHORT).show()
             },
             currentHour,
             currentMinute,

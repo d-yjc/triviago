@@ -1,5 +1,6 @@
 package com.example.triviago.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,11 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.triviago.models.Quiz
 import com.example.triviago.R
+import com.example.triviago.RecommendedQuizAdapter
 import com.example.triviago.activities.GameActivity
 import com.google.android.material.slider.Slider
 import org.xmlpull.v1.XmlPullParser
 
-import com.example.triviago.RecommendedQuizAdapter
+
 
 class HomeFragment : Fragment() {
     private lateinit var recommendedQuizAdapter: RecommendedQuizAdapter
@@ -52,12 +54,16 @@ class HomeFragment : Fragment() {
             when (eventType) {
                 XmlPullParser.START_TAG -> {
                     if (name == "quiz") {
-                        currentQuiz = Quiz(title = "", description = "", apiUrl = "")
+                        currentQuiz = Quiz(title = "", description = "", apiUrl = "", icon = 0)
                     } else if (currentQuiz != null) {
                         when (name) {
                             "title" -> currentQuiz.title = parser.nextText()
                             "description" -> currentQuiz.description = parser.nextText()
                             "apiUrl" -> currentQuiz.apiUrl = parser.nextText()
+                            "icon" -> {
+                                val iconName = parser.nextText()
+                                currentQuiz.icon = getDrawableResIdByName(requireContext(), iconName)
+                            }
                         }
                     }
                 }
@@ -74,12 +80,18 @@ class HomeFragment : Fragment() {
         return quizList
     }
 
+    private fun getDrawableResIdByName(context: Context, name: String): Int {
+        return context.resources.getIdentifier(name, "drawable", context.packageName)
+    }
+
+
     private fun setUpRecommendedQuizzesRecyclerView(view: View, quizList: List<Quiz>) {
         recommendedQuizzesRecyclerView = view.findViewById(R.id.recommended_quizzes_recycler_view)
         recommendedQuizAdapter = RecommendedQuizAdapter(requireContext(), quizList) { quiz ->
             startGameActivityWithQuiz(quiz)
         }
-        recommendedQuizzesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recommendedQuizzesRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recommendedQuizzesRecyclerView.adapter = recommendedQuizAdapter
     }
 
@@ -91,33 +103,38 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpQuizOptions(view: View) {
-        // Number of Questions Slider
+        //Questions Slider
         val questionSlider: Slider = view.findViewById(R.id.num_questions_slider)
         questionSlider.valueFrom = 1f
         questionSlider.valueTo = 50f
-        questionSlider.value = 10f // Set default value
+        questionSlider.value = 10f //Default value to 10 questionizzies.
         questionSlider.setLabelFormatter { value -> value.toInt().toString() }
-        questionSlider.trackActiveTintList = ContextCompat.getColorStateList(requireContext(), R.color.primary)!!
-        // Question Type Toggle Group
+        questionSlider.trackActiveTintList =
+            ContextCompat.getColorStateList(requireContext(), R.color.primary)!!
+        //Question-type Toggle Group
         val typeToggleGroup: com.google.android.material.button.MaterialButtonToggleGroup =
             view.findViewById(R.id.question_type_toggle_group)
-        //val multipleChoiceButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_multiple_choice) TODO: Remove?
-        //val trueFalseButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_true_false)
 
-        // Set default selection (optional)
+        //Set default selection to multiple-choice
         typeToggleGroup.check(R.id.btn_multiple_choice)
 
-        // Difficulty Spinner
+        //Difficulty Spinner
         val difficultySpinner: Spinner = view.findViewById(R.id.difficulty_spinner)
         val difficulties = resources.getStringArray(R.array.difficulties)
-        val difficultyAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, difficulties)
+        val difficultyAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item, difficulties
+        )
         difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         difficultySpinner.adapter = difficultyAdapter
 
-        // Category Spinner
+        //Category Spinner
         val categorySpinner: Spinner = view.findViewById(R.id.category_spinner)
         val categories = resources.getStringArray(R.array.categories)
-        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
+        val categoryAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_item, categories
+        )
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         categorySpinner.adapter = categoryAdapter
     }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.NumberPicker
 import android.widget.Spinner
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +16,7 @@ import com.example.triviago.fragments.HomeFragment
 import com.example.triviago.fragments.LeaderboardFragment
 import com.example.triviago.fragments.SettingsFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.slider.Slider
 import com.google.firebase.auth.FirebaseAuth
@@ -86,12 +86,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun startGameActivity() {
-        val homeFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as? HomeFragment
+        val homeFragment =
+            supportFragmentManager.findFragmentById(R.id.fragment_container) as? HomeFragment
 
-        // Retrieve slider value for the number of questions
-        val numQuestions = homeFragment?.view?.findViewById<Slider>(R.id.num_questions_slider)?.value?.toInt() ?: 10 // Default to 10 if null
+        val numQuestions =
+            homeFragment
+                ?.view
+                ?.findViewById<Slider>(R.id.num_questions_slider)
+                ?.value?.toInt()
+                    ?: 10
 
-        // Retrieve category and difficulty from Spinners
         val difficultyPicker = homeFragment?.view?.findViewById<Spinner>(R.id.difficulty_spinner)
         val categoryPicker = homeFragment?.view?.findViewById<Spinner>(R.id.category_spinner)
         val difficulties = resources.getStringArray(R.array.difficulties)
@@ -99,8 +103,9 @@ class HomeActivity : AppCompatActivity() {
         val difficulty = difficulties[difficultyPicker?.selectedItemPosition ?: 0].lowercase()
         val category = categories[categoryPicker?.selectedItemPosition ?: 0]
 
-        // Retrieve selected type from MaterialToggleButtonGroup
-        val toggleGroup = homeFragment?.view?.findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.question_type_toggle_group)
+        val toggleGroup = homeFragment
+            ?.view
+            ?.findViewById<MaterialButtonToggleGroup>(R.id.question_type_toggle_group)
         val selectedButtonId = toggleGroup?.checkedButtonId
         val type = when (selectedButtonId) {
             R.id.btn_multiple_choice -> "multiple"
@@ -109,7 +114,6 @@ class HomeActivity : AppCompatActivity() {
             else -> "any"
         }
 
-        // Start the GameActivity with the retrieved values
         val intent = Intent(this, GameActivity::class.java).apply {
             putExtra("numQuestions", numQuestions)
             putExtra("category", category)

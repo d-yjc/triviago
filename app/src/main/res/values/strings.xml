@@ -31,4 +31,5 @@
     <string name="any">Any</string>
     <string name="select_number_of_questions">Select number of questions</string>
     <string name="null_winrate">Win rate 0%</string>
+    <string name="category_icon">Category Icon</string>
 </resources>

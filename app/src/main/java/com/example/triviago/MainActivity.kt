@@ -23,16 +23,15 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        // Check if user is already authenticated
         val auth = FirebaseAuth.getInstance()
 
         if (auth.currentUser != null) {
-            // User is already signed in
+            //User is already signed in
             startActivity(Intent(this, HomeActivity::class.java))
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
         }
-        // Close MainActivity so it doesn't stay in the back stack
+        //Closing MainActivity so it doesn't stay in the back stack
         finish()
     }
 }

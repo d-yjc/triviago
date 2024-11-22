@@ -31,9 +31,14 @@ class QuizResponseAdapter(
 
     override fun onBindViewHolder(holder: QuizViewHolder, index: Int) {
         val response = quizzes[index]
-        holder.categoryTextView.text = "${response.category ?: "Unknown"}"
-        holder.dateTextView.text = "${formatDate(response.date)}"
-        holder.scoreTextView.text = "Score: ${response.score}/${response.numQuestions}"
+        holder.categoryTextView.text = response.category
+        holder.dateTextView.text = formatDate(response.date)
+        holder.scoreTextView.text = buildString {
+            append("Score: ")
+            append(response.score)
+            append("/")
+            append(response.numQuestions)
+        }
         Log.d("307Tag", response.type)
         holder.typeTextView.text =
             if (response.type == "boolean") "True or False"

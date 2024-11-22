@@ -48,7 +48,11 @@ class OpenTdbAPIHandler(private val context: Context) {
         }
     }
 
-    private fun buildURL(numQuestions: Int, category: String, difficulty: String, type: String): String {
+    private fun buildURL(
+        numQuestions: Int,
+        category: String,
+        difficulty: String,
+        type: String): String {
         val baseUrl = "https://opentdb.com/api.php?amount=$numQuestions"
         val categoryPart = if (category != "Any") "&category=${getCategoryId(category)}" else ""
         val difficultyPart =
@@ -96,7 +100,9 @@ class OpenTdbAPIHandler(private val context: Context) {
         return questions
     }
 
-    private fun fetchOptions(correctAnswer: String, incorrectAnswers: JSONArray): MutableList<String> {
+    private fun fetchOptions(
+        correctAnswer: String,
+        incorrectAnswers: JSONArray): MutableList<String> {
         val options = mutableListOf<String>()
         for (i in 0 until incorrectAnswers.length()) {
             options.add(incorrectAnswers.getString(i))

@@ -4,22 +4,41 @@
         <title>Geek Mode: Activated! Take the Challenge!</title>
         <description>Challenge your knowledge and see if you truly embody the ultimate geek!.</description>
         <apiUrl>https://opentdb.com/api.php?amount=20&amp;category=30</apiUrl>
+        <icon>ic_glasses</icon>
     </quiz>
 
     <quiz>
         <title>Otaku desu~ How Well Do You Know Anime &amp; Manga?</title>
         <description>Dive into the vibrant 'sekai' of anime and manga to test your otaku expertise!</description>
         <apiUrl>https://opentdb.com/api.php?amount=20&amp;category=31</apiUrl>
+        <icon>ic_manga</icon>
     </quiz>
 
     <quiz>
         <title>Bookworm Bonanza: How Much Do You Really Know?</title>
         <description>Prove your literary prowess with our comprehensive trivia!</description>
         <apiUrl>https://opentdb.com/api.php?amount=20&amp;category=10</apiUrl>
+        <icon>ic_book</icon>
     </quiz>
+
     <quiz>
         <title>Parasocial Pop Quiz: How Well Do You Know Your Celebs?</title>
         <description>Obsessed much? Put your parasocial bonds to the test!</description>
         <apiUrl>https://opentdb.com/api.php?amount=20&amp;category=26</apiUrl>
+        <icon>ic_celebrity</icon>
+    </quiz>
+
+    <quiz>
+        <title>Noob or Pro? Test Your Video Game Mastery!</title>
+        <description>Ready, Player One? Level up your knowledge and see if you can beat this high score!</description>
+        <apiUrl>https://opentdb.com/api.php?amount=20&amp;category=15</apiUrl>
+        <icon>ic_gamecontroller</icon>
+    </quiz>
+
+    <quiz>
+        <title>Canvas of Curiosities: How Much Do You Know About Art?</title>
+        <description>Step into the gallery and showcase your expertise in the world of art!</description>
+        <apiUrl>https://opentdb.com/api.php?amount=20&amp;category=25</apiUrl>
+        <icon>ic_palette</icon>
     </quiz>
 </quizzes>

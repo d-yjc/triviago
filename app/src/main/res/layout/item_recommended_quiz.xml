@@ -1,10 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/recommended_quiz_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
     android:layout_marginBottom="16dp"
     app:cardElevation="4dp"
     app:cardCornerRadius="8dp"
@@ -17,22 +18,43 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/quiz_title"
-            android:layout_width="wrap_content"
+        <!-- Row layout for Icon and Title -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quiz Title"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/primaryDark" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
+            <!-- Icon -->
+            <ImageView
+                android:id="@+id/quiz_icon"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_play"
+                android:contentDescription="@string/category_icon"
+                android:layout_marginEnd="8dp"
+                app:tint="@color/primaryDark" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/quiz_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quiz Title"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/primaryDark" />
+        </LinearLayout>
+
+        <!-- Description -->
         <TextView
             android:id="@+id/quiz_description"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Quiz Description"
             android:textSize="14sp"
             android:textColor="@android:color/black"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="8dp" />
 
     </LinearLayout>

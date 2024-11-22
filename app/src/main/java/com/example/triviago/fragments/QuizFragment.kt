@@ -37,14 +37,12 @@ class QuizFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_quiz, container, false)
 
-        // Retrieve arguments from bundle
         arguments?.let {
             question = it.getParcelable(ARG_QUESTION, Question::class.java)!!
             questionNumber = it.getInt(ARG_QUESTION_NUMBER, 0)
             totalQuestions = it.getInt(ARG_TOTAL_QUESTIONS, 0)
         }
 
-        // Initialize views
         questionTextView = view.findViewById(R.id.questionTextView)
         questionNumberTextView = view.findViewById(R.id.questionNumberTextView)
         booleanOptionsLayout = view.findViewById(R.id.booleanOptionsLayout)
@@ -60,8 +58,12 @@ class QuizFragment : Fragment() {
 
         // Update views with question data
         questionTextView.text = Html.fromHtml(question.questionText, Html.FROM_HTML_MODE_LEGACY)
-        questionNumberTextView.text = "Question $questionNumber of $totalQuestions"
-
+        questionNumberTextView.text = buildString {
+            append("Question ")
+            append(questionNumber)
+            append(" of ")
+            append(totalQuestions)
+        }
         displayOptions()
 
         return view
@@ -69,14 +71,14 @@ class QuizFragment : Fragment() {
 
     private fun displayOptions() {
         if (question.isBooleanType) {
-            // For boolean questions
+            //For boolean questions
             booleanOptionsLayout.visibility = View.VISIBLE
             multipleChoiceOptionsLayout.visibility = View.GONE
 
             trueButton.setOnClickListener { checkAnswer("True") }
             falseButton.setOnClickListener { checkAnswer("False") }
         } else {
-            // For multiple-choice questions
+            //For multiple-choice questions
             booleanOptionsLayout.visibility = View.GONE
             multipleChoiceOptionsLayout.visibility = View.VISIBLE
 
@@ -100,9 +102,10 @@ class QuizFragment : Fragment() {
         private const val ARG_QUESTION = "question"
         private const val ARG_QUESTION_NUMBER = "questionNumber"
         private const val ARG_TOTAL_QUESTIONS = "totalQuestions"
-
-        // Factory method to create a new instance of QuizFragment with arguments
-        fun newInstance(question: Question, questionNumber: Int, totalQuestions: Int) = QuizFragment().apply {
+        fun newInstance(
+            question: Question,
+            questionNumber: Int,
+            totalQuestions: Int) = QuizFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(ARG_QUESTION, question)
                 putInt(ARG_QUESTION_NUMBER, questionNumber)
