@@ -78,7 +78,6 @@
                             android:layout_height="wrap_content"
                             android:text="@string/multiple_choice"
                             android:textSize="12sp"
-                            android:textColor="@color/primary"
                             app:backgroundTint="@color/white"
                             app:checkedIconTint="@color/primary"
                             app:cornerRadius="10dp" />
@@ -90,7 +89,6 @@
                             android:layout_height="wrap_content"
                             android:text="@string/true_false"
                             android:textSize="12sp"
-                            android:textColor="@color/primary"
                             app:backgroundTint="@color/white"
                             app:checkedIconTint="@color/primary"
                             app:cornerRadius="10dp" />
@@ -102,7 +100,6 @@
                             android:layout_height="wrap_content"
                             android:text="@string/any"
                             android:textSize="12sp"
-                            android:textColor="@color/primary"
                             app:backgroundTint="@color/white"
                             app:checkedIconTint="@color/primary"
                             app:cornerRadius="10dp" />

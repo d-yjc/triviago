@@ -97,7 +97,11 @@ class SettingsFragment : Fragment() {
                 scheduleDailyNotification(hourOfDay, minute)
                 Toast.makeText(
                     requireContext(),
-                    "Notification Time Set to $hourOfDay:$minute", Toast.LENGTH_SHORT).show()
+                    String.format(
+                        Locale.getDefault(),
+                        "Notification Time Set to %02d:%02d", hourOfDay, minute
+                    ),
+                    Toast.LENGTH_SHORT).show()
             },
             currentHour,
             currentMinute,
