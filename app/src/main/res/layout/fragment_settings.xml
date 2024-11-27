@@ -55,7 +55,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Enable Daily Trivia Notifications"
+                        android:text="@string/enable_notif"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -81,16 +81,17 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Set Notification Time"
+                        android:text="@string/set_notification_time"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
                     <TextView
                         android:id="@+id/text_notification_time_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="08:00"
+                        android:text="@string/default_time_text"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
                         android:textColor="?android:attr/textColorSecondary"
+                        android:paddingStart="8dp"
                         android:paddingEnd="8dp" />
 
                     <ImageButton
@@ -98,10 +99,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Set Notification Time"
+                        android:contentDescription="@string/set_notif_time"
                         android:src="@drawable/ic_chevron_right_24"
                         app:tint="?android:attr/textColorSecondary" />
-
                 </LinearLayout>
 
             </LinearLayout>
@@ -111,7 +111,7 @@
             android:id="@+id/header_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Account Settings"
+            android:text="@string/account_settings_header"
             android:textStyle="bold"
             android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@color/primaryDark"
@@ -152,7 +152,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Delete Data"
+                        android:text="@string/delete_data"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
                         android:clickable="false"/>
 
@@ -161,7 +161,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Delete Data"
+                        android:contentDescription="@string/delete_data"
                         android:src="@drawable/ic_chevron_right_24"
                         app:tint="?android:attr/textColorSecondary" />
                 </LinearLayout>
@@ -183,7 +183,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Log out"
+                        android:text="@string/log_out"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
                         android:clickable="false"/>
 
@@ -192,7 +192,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Logout"
+                        android:contentDescription="@string/log_out"
                         android:src="@drawable/ic_chevron_right_24"
                         app:tint="?android:attr/textColorSecondary" />
                 </LinearLayout>
@@ -213,7 +213,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Delete Account"
+                        android:text="@string/delete_account"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
                         android:textColor="@android:color/holo_red_dark"
                         android:clickable="false"/>
@@ -223,7 +223,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:contentDescription="Delete Account"
+                        android:contentDescription="@string/delete_account"
                         android:src="@drawable/ic_chevron_right_24"
                         app:tint="?android:attr/textColorSecondary" />
                 </LinearLayout>

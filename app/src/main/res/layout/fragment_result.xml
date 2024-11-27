@@ -40,7 +40,7 @@
                 android:id="@+id/scoreTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your Score: 0"
+                android:text="@string/default_score_results"
                 android:textSize="24sp"
                 android:textColor="@android:color/black"
                 android:layout_marginBottom="8dp" />
@@ -50,7 +50,7 @@
                 android:id="@+id/pointTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your Points: 0"
+                android:text="@string/default_points_results"
                 android:textSize="20sp"
                 android:textColor="@color/complementaryLight" />
         </LinearLayout>
@@ -64,6 +64,6 @@
         android:layout_below="@+id/scoreCard"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20pt"
-        android:text="Quit"/>
+        android:text="@string/quit"/>
 </RelativeLayout>
 

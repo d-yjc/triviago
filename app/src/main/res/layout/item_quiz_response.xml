@@ -19,7 +19,7 @@
             android:id="@+id/categoryTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category"
+            android:text="@string/category"
             android:textStyle="bold"
             android:textSize="15sp" />
 
@@ -27,7 +27,7 @@
             android:id="@+id/quizDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"
+            android:text="@string/date"
             android:textSize="14sp" />
 
         <View
@@ -38,7 +38,7 @@
             android:id="@+id/quizScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Score"
+            android:text="@string/score"
             android:paddingVertical="4dp"
             android:textSize="14sp" />
 
@@ -56,10 +56,9 @@
                 android:id="@+id/quizType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Type"
+                android:text="@string/type"
                 android:textSize="13sp"
                 android:textColor="@android:color/black" />
         </LinearLayout>
-
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

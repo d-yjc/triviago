@@ -26,6 +26,7 @@ class ProfileActivity : AppCompatActivity() {
         val scoreTextView: TextView = findViewById(R.id.tvScores)
         val tvWinLoss: TextView = findViewById(R.id.tvWinLoss)
         val tvWinRate: TextView = findViewById(R.id.tvWinRate)
+        val tvRank: TextView = findViewById(R.id.tvRank)
         val user = FirebaseAuth.getInstance().currentUser
         val db = FirebaseFirestore.getInstance()
 
@@ -39,36 +40,48 @@ class ProfileActivity : AppCompatActivity() {
 
         user?.let { user ->
             userName.text = user.email
-            db.collection("users").document(user.uid).get().addOnSuccessListener { document ->
-                val totalScore = document.getLong("score") ?: 0
-                scoreTextView.text = buildString {
-                    append("Rating: ")
-                    append(totalScore)
-                }
-                val wins = document.getLong("questionWins") ?: 0
-                val losses = document.getLong("questionLosses") ?: 0
-                var winRate = (wins.toDouble() / (wins + losses).toDouble()) * 100
-                winRate = String.format(Locale.US, "%.2f", winRate).toDouble()
-                tvWinLoss.text = buildString {
-                    append(wins)
-                    append("W ")
-                    append(losses)
-                    append("L")
-                }
 
-                if (wins + losses > 0) {
-                    var winRate = (wins.toDouble() / (wins + losses).toDouble()) * 100
-                    winRate = String.format(Locale.US, "%.2f", winRate).toDouble()
-                    tvWinRate.text = buildString {
-                        append("Win rate ")
-                        append(winRate)
-                        append("%")
+            db.collection("users").orderBy("score", Query.Direction.DESCENDING).get()
+                .addOnSuccessListener { querySnapshot ->
+                    val scores = querySnapshot.documents.mapIndexed { indexLeaderboard, document ->
+                        document to (indexLeaderboard + 1)
                     }
-                } else {
-                    tvWinRate.text = getString(R.string.null_winrate)
+                    val userDoc = scores.find { (doc, _) -> doc.id == user.uid }
+                    userDoc?.let { (doc, rank) ->
+                        val totalScore = doc.getLong("score") ?: 0
+                        scoreTextView.text = buildString {
+                            append("Rating: ")
+                            append(totalScore)
+                        }
+                        tvRank.text = buildString {
+                            append("Rank ")
+                            append(rank)
+                        }
+
+                        val wins = doc.getLong("questionWins") ?: 0
+                        val losses = doc.getLong("questionLosses") ?: 0
+                        tvWinLoss.text = buildString {
+                            append(wins)
+                            append("W ")
+                            append(losses)
+                            append("L")
+                        }
+
+                        if (wins + losses > 0) {
+                            val winRate = (wins.toDouble() / (wins + losses).toDouble()) * 100
+                            tvWinRate.text = buildString {
+                                append("Win rate ")
+                                append(String.format(Locale.US, "%.2f", winRate))
+                                append("%")
+                            }
+                        } else {
+                            tvWinRate.text = getString(R.string.null_winrate)
+                        }
+                    }
                 }
-            }
-            fetchQuizHistory()
+                .addOnFailureListener { e ->
+                    Log.e("ProfileActivity", "Error fetching leaderboard data", e)
+                }
         }
     }
 

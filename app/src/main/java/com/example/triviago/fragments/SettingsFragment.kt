@@ -25,6 +25,7 @@ import com.example.triviago.R
 import com.example.triviago.TriviaNotificationWorker
 import com.example.triviago.activities.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Locale
 
@@ -62,8 +63,9 @@ class SettingsFragment : Fragment() {
         layoutSetNotificationTime = view.findViewById(R.id.layout_set_notification_time)
         textNotificationTimeValue = view.findViewById(R.id.text_notification_time_value)
 
+        val userId = mAuth.currentUser?.uid
         sharedPreferences = requireContext()
-            .getSharedPreferences("app_settings", Context.MODE_PRIVATE)
+            .getSharedPreferences("app_settings_$userId", Context.MODE_PRIVATE)
 
         return view
     }
@@ -139,7 +141,7 @@ class SettingsFragment : Fragment() {
             val db = FirebaseFirestore.getInstance()
             val userDocRef = db.collection("users").document(user.uid)
 
-            // First, delete all documents in 'responses' subcollection
+            //Delete all documents in 'responses' subcollection
             val responsesCollectionRef = userDocRef.collection("responses")
             responsesCollectionRef.get()
                 .addOnSuccessListener { querySnapshot ->
@@ -148,9 +150,36 @@ class SettingsFragment : Fragment() {
                         batch.delete(document.reference)
                     }
                     // Commit the batch
-                    batch.commit()
+                    batch.commit().addOnSuccessListener {
+                        resetUserAttributes(userDocRef)
+                    }
                 }
         }
+    }
+
+    private fun resetUserAttributes(userDocRef: DocumentReference) {
+        val defaultAttributes = mapOf(
+            "questionLosses" to 0,
+            "questionWins" to 0,
+            "score" to 0
+        )
+
+        userDocRef.update(defaultAttributes)
+            .addOnSuccessListener {
+                sharedPreferences.edit().clear().apply()
+                Toast.makeText(
+                    requireContext(),
+                    "Your data has sucessfully been deleted.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(
+                    requireContext(),
+                    "Failed to delete data: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
     }
 
     private fun showDeleteAccountConfirmationDialog() {

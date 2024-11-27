@@ -19,7 +19,7 @@
             android:id="@+id/userRank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="@string/rank_default_leaderboard"
             android:textStyle="bold"
             android:textSize="24sp"
             android:textColor="@color/darkBackground"
@@ -35,7 +35,7 @@
                 android:id="@+id/userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Name"
+                android:text="@string/name_default_leaderboard"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="@color/darkBackground"/>
@@ -44,7 +44,7 @@
                 android:id="@+id/userScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Score: 100"
+                android:text="@string/score_default_leaderboard"
                 android:textColor="?attr/colorSecondary"/>
         </LinearLayout>
     </LinearLayout>

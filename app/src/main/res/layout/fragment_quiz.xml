@@ -8,7 +8,7 @@
         android:id="@+id/questionNumberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Question 1"
+        android:text="@string/question_1"
         android:textSize="18sp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp" />
@@ -20,7 +20,7 @@
         android:layout_height="250dp"
         android:layout_below="@id/questionNumberTextView"
         android:layout_marginTop="24dp"
-        android:text="Question goes here"
+        android:text="@string/question_goes_here"
         android:textSize="22sp"
         android:textColor="#000"
         android:gravity="center"
@@ -44,7 +44,7 @@
             android:id="@+id/trueButton"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="True"
+            android:text="@string/true_boolean"
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_background" />
 
@@ -52,7 +52,7 @@
             android:id="@+id/falseButton"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="False"
+            android:text="@string/false_boolean"
             android:layout_marginStart="16dp"
             android:background="@drawable/button_background" />
     </LinearLayout>
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/button_background"
-            android:text="Option 1" />
+            android:text="@string/option_1" />
 
         <Button
             android:id="@+id/optionButton2"
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/button_background"
-            android:text="Option 2" />
+            android:text="@string/option_2" />
 
         <Button
             android:id="@+id/optionButton3"
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/button_background"
-            android:text="Option 3" />
+            android:text="@string/option_3" />
 
         <Button
             android:id="@+id/optionButton4"
@@ -98,7 +98,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/button_background"
-            android:text="Option 4" />
+            android:text="@string/option_4" />
     </LinearLayout>
-
 </RelativeLayout>

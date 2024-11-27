@@ -75,7 +75,7 @@
         android:backgroundTint="@color/primary"
         app:iconTint="@color/white"
         app:icon="@drawable/ic_play"
-        android:text="Play!"
+        android:text="@string/play"
         android:textSize="8pt"
         android:textStyle="bold"
         android:textColor="@color/primaryLight"

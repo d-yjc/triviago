@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="Number of Questions"
+                        android:text="@string/number_of_questions"
                         android:textColor="@color/primaryDark"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -60,7 +60,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"
-                        android:text="Question Type"
+                        android:text="@string/question_type"
                         android:textColor="@color/primaryDark"
                         android:textSize="17sp"
                         android:textStyle="bold" />
@@ -127,7 +127,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="Category"
+                        android:text="@string/category"
                         android:textColor="@color/primaryDark"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -144,7 +144,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
-                        android:text="Difficulty"
+                        android:text="@string/difficulty"
                         android:textColor="@color/primaryDark"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -162,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Recommended Quizzes"
+                android:text="@string/recommended_quizzes"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/primaryDark" />
