@@ -1,6 +1,10 @@
 package com.example.triviago.activities
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.util.Log
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -53,9 +57,14 @@ class ProfileActivity : AppCompatActivity() {
                             append("Rating: ")
                             append(totalScore)
                         }
-                        tvRank.text = buildString {
-                            append("Rank ")
-                            append(rank)
+                        val rankTitle = "Rank $rank"
+                        tvRank.text = SpannableString(rankTitle).apply {
+                            setSpan(
+                                StyleSpan(Typeface.BOLD),
+                                rankTitle.indexOf(rank.toString()),
+                                rankTitle.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
                         }
 
                         val wins = doc.getLong("questionWins") ?: 0
@@ -78,6 +87,7 @@ class ProfileActivity : AppCompatActivity() {
                             tvWinRate.text = getString(R.string.null_winrate)
                         }
                     }
+                    fetchQuizHistory()
                 }
                 .addOnFailureListener { e ->
                     Log.e("ProfileActivity", "Error fetching leaderboard data", e)
