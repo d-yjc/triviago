@@ -1,12 +1,9 @@
 # 📘 Trivia Go! - A Kotlin Android Quiz App  
 
+https://github.com/user-attachments/assets/e4101031-f7cf-48fa-ac7b-7824c3aba1fa
 
-https://github.com/user-attachments/assets/84e0125f-e76d-44fc-99b3-85e0f048b9cd
 
-
-> 🎯 **"Challenge 
-
-Your Knowledge, One Quiz at a Time!"**  
+> 🎯 **"Challenge Your Knowledge, One Quiz at a Time!"**  
 
 ---
 
