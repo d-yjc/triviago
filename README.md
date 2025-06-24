@@ -1,6 +1,12 @@
 # 📘 Trivia Go! - A Kotlin Android Quiz App  
 
-> 🎯 **"Challenge Your Knowledge, One Quiz at a Time!"**  
+
+https://github.com/user-attachments/assets/84e0125f-e76d-44fc-99b3-85e0f048b9cd
+
+
+> 🎯 **"Challenge 
+
+Your Knowledge, One Quiz at a Time!"**  
 
 ---
 
